@@ -16,7 +16,7 @@ const ModalStack = createStackNavigator();
 function ChatApp() {
 	return (
 		<ChatAppStack.Navigator
-			initialRouteName="Login"
+			initialRouteName="Home"
 			screenOptions={{
 				headerStyle: {
 					backgroundColor: "#6646ee",

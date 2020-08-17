@@ -3,10 +3,10 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import { List, Title, Divider, IconButton } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
-import { format } from "date-fns/fp";
 // import components
 import FormButton from "../components/FormButton";
 import Loading from "../components/Loading";
+import ListItem from "../components/ListItem";
 // import context
 import { AuthContext } from "../context/Auth";
 
@@ -43,41 +43,15 @@ export default function HomeScreen({ navigation }) {
 
 	if (loading) return <Loading />;
 
-	const rightComponent = (props) => {};
-
-	// rendered below in flatlist
-	const listItem = ({ item }) => {
-		const createdAt = item.latestMessage.createdAt;
-		const local = new Date(createdAt);
-		const formatTime = format("h:mm a")(local);
-
-		const rightComponent = () => (
-			<RightContainer>
-				<Time>{formatTime}</Time>
-				<StyledIcon icon="chevron-right" color={"rgba(0, 0, 0, 0.54)"} />
-			</RightContainer>
-		);
-
-		return (
-			<List.Item
-				onPress={() => navigation.navigate("Room", { thread: item })}
-				title={item.name}
-				titleStyle={styles.listTitle}
-				description={item.latestMessage.text}
-				descriptionNumberOfLines={1}
-				descriptionStyle={styles.listDescription}
-				right={rightComponent}
-			/>
-		);
-	};
-
 	return (
 		<Container>
 			<FlatList
 				data={threads}
 				keyExtractor={(item) => item._id}
 				ItemSeparatorComponent={() => <Divider />}
-				renderItem={listItem}
+				renderItem={({ item }) => (
+					<ListItem item={item} navigation={navigation} />
+				)}
 			/>
 			<Logout
 				modeValue="contained"

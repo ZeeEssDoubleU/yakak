@@ -1,6 +1,5 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from "firebase/app";
-// import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 
@@ -16,8 +15,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseInit = firebase.initializeApp(firebaseConfig);
-export default firebaseInit;
-export const firebase_auth = firebaseInit.auth();
-export const firebase_firestore = firebaseInit.firestore();
-// export const firebase_analytics = firebaseInit.analytics();
+const firebase_init = firebase.initializeApp(firebaseConfig);
+export default firebase_init;
+export const firebase_auth = firebase_init.auth();
+export const firebase_firestore = firebase_init.firestore();
