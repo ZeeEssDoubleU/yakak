@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { List, Title, Divider, IconButton } from "react-native-paper";
+import { View, FlatList } from "react-native";
+import { Divider } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
 // import components
 import FormButton from "../components/FormButton";
 import Loading from "../components/Loading";
-import ListItem from "../components/ListItem";
+import SwipeToDelete from "../components/FlatList/SwipeToDelete";
+import Item from "../components/FlatList/Item";
 // import context
 import { AuthContext } from "../context/Auth";
 
@@ -19,6 +20,7 @@ export default function HomeScreen({ navigation }) {
 	const [threads, setThreads] = useState([]);
 	const [loading, setLoading] = useState([]);
 
+	// effect fetches room data to display in list
 	useEffect(() => {
 		// return array of THREAD documents
 		const subscribe = firebase_firestore
@@ -41,6 +43,13 @@ export default function HomeScreen({ navigation }) {
 		return () => subscribe();
 	}, []);
 
+	// deletes thread and updates flatlist display
+	function handleOnSwipe(item) {
+		const updateThreads = [...threads];
+		updateThreads.splice(updateThreads.indexOf(item), 1);
+		setThreads(updateThreads);
+	}
+
 	if (loading) return <Loading />;
 
 	return (
@@ -50,7 +59,9 @@ export default function HomeScreen({ navigation }) {
 				keyExtractor={(item) => item._id}
 				ItemSeparatorComponent={() => <Divider />}
 				renderItem={({ item }) => (
-					<ListItem item={item} navigation={navigation} />
+					<SwipeToDelete onSwipe={() => handleOnSwipe(item)}>
+						<Item item={item} navigation={navigation} />
+					</SwipeToDelete>
 				)}
 			/>
 			<Logout
@@ -70,28 +81,8 @@ const Container = styled(View)`
 	background-color: #f5f5f5;
 	flex: 1;
 `;
-const RightContainer = styled(View)`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-`;
-const styles = StyleSheet.create({
-	listTitle: {
-		fontSize: 22,
-	},
-	listDescription: {
-		fontSize: 16,
-	},
-});
-const StyledIcon = styled(IconButton)`
-	display: flex;
-	margin: 0;
-`;
 const Logout = styled(FormButton)`
 	position: absolute;
 	align-self: center;
 	bottom: 32px;
-`;
-const Time = styled(Text)`
-	color: rgba(0, 0, 0, 0.54);
 `;

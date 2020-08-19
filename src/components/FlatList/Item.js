@@ -8,17 +8,21 @@ import styled from "styled-components/native";
 // compoenent
 //***********
 
-export default function ListItem({ item, navigation }) {
-	const createdAt = item.latestMessage.createdAt;
-	const local = new Date(createdAt);
-	const formatTime = format("h:mm a")(local);
+export default function Item({ item, navigation }) {
+	// right side of list item (ie time and arrow icon)
+	const rightComponent = () => {
+		// format time
+		const createdAt = item.latestMessage.createdAt;
+		const local = new Date(createdAt);
+		const formatTime = format("h:mm a")(local);
 
-	const rightComponent = () => (
-		<RightContainer>
-			<Time>{formatTime}</Time>
-			<StyledIcon icon="chevron-right" color={"rgba(0, 0, 0, 0.54)"} />
-		</RightContainer>
-	);
+		return (
+			<RightContainer>
+				<Time>{formatTime}</Time>
+				<StyledIcon icon="chevron-right" color={"rgba(0, 0, 0, 0.54)"} />
+			</RightContainer>
+		);
+	};
 
 	return (
 		<List.Item
