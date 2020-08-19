@@ -37,25 +37,37 @@ import SwipeActions from "./SwipeActions";
 //***********
 // component
 //***********
+// TODO: add confirmation when clicking remove
+// TODO: prevent room removal by non owners
+// TODO: only allow one room on list to be swiped at a time
+// TODO: find better format for logout button
+// consider adding bottom toolbar
+// consider adding top left icon
 
-export default function SwipeToDelete({ onSwipe, children }) {
-	// TODO: find way to assign container height dynamically.  Maybe useLayout on container component
-	const containerHeight = 74;
+// TODO: add actual remove functionality from firestore
+// TODO: add scroll to list
+// not working since adding swipe to delete
+
+export default function SwipeToDelete({ onRemove, children }) {
 	const {
 		gestureHandler,
 		translation,
 		velocity,
 		state,
 	} = usePanGestureHandler();
+
+	const containerHeight = 74;
+	const snapPoints = [-100, 0];
+	// gesture states
 	const { width } = Dimensions.get("window");
 	const height = useValue(containerHeight);
-	const snapPoints = [-100, 0];
 	const offsetX = useValue(0); // origin before gesture
 	const translateX = useValue(0); // diff from origin
-	const deleteOpacity = useValue(1);
+	const deleteOpacity = useValue(1); // multiplies by element opacity to hide
 	const clock = useClock();
 	const to = snapPoint(translateX, velocity.x, snapPoints);
 	const shouldRemove = useValue(0);
+
 	useCode(
 		() => [
 			// handle during swipe
@@ -69,7 +81,7 @@ export default function SwipeToDelete({ onSwipe, children }) {
 							// allow slide to left
 							lessThan(translation.x, 0),
 							min(translation.x, 0),
-							// prevent slide past far right (0)
+							// prevent slide past far right (past 0)
 							clamp(translation.x, 0, multiply(offsetX, -1)),
 						),
 					),
@@ -89,10 +101,11 @@ export default function SwipeToDelete({ onSwipe, children }) {
 				set(height, timing({ from: containerHeight, to: 0 })),
 				// reduce visibility of remove text
 				set(deleteOpacity, timing({ from: deleteOpacity, to: -1 })),
-				cond(not(clockRunning(clock)), call([], onSwipe)),
+				// calls onRemove function
+				cond(not(clockRunning(clock)), call([], onRemove)),
 			]),
 		],
-		[onSwipe],
+		[onRemove],
 	);
 	return (
 		<Container style={{ height }}>

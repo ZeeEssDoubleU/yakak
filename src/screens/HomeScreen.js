@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, FlatList } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
@@ -44,7 +45,7 @@ export default function HomeScreen({ navigation }) {
 	}, []);
 
 	// deletes thread and updates flatlist display
-	function handleOnSwipe(item) {
+	function handleRemove(item) {
 		const updateThreads = [...threads];
 		updateThreads.splice(updateThreads.indexOf(item), 1);
 		setThreads(updateThreads);
@@ -53,22 +54,22 @@ export default function HomeScreen({ navigation }) {
 	if (loading) return <Loading />;
 
 	return (
-		<Container>
-			<FlatList
+		<Container style={{ ...StyleSheet.absoluteFillObject }}>
+			<RoomList
 				data={threads}
 				keyExtractor={(item) => item._id}
 				ItemSeparatorComponent={() => <Divider />}
 				renderItem={({ item }) => (
-					<SwipeToDelete onSwipe={() => handleOnSwipe(item)}>
-						<Item item={item} navigation={navigation} />
+					<SwipeToDelete onRemove={() => handleRemove(item)}>
+						<Item item={item} {...{ navigation }} />
 					</SwipeToDelete>
 				)}
 			/>
-			<Logout
+			{/* <Logout
 				modeValue="contained"
 				title="Logout"
 				onPress={() => logout()}
-			/>
+			/> */}
 		</Container>
 	);
 }
@@ -86,3 +87,4 @@ const Logout = styled(FormButton)`
 	align-self: center;
 	bottom: 32px;
 `;
+const RoomList = styled(FlatList)``;
