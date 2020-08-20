@@ -1,20 +1,17 @@
 import React, { useState, useContext } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	Keyboard,
-	TouchableWithoutFeedback,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import { IconButton, Title } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
 import { format } from "date-fns/fp";
 // import components
-import FormButton from "../components/FormButton";
-import FormInput from "../components/FormInput";
+import FormButton from "../components/Form/FormButton";
+import FormInput from "../components/Form/FormInput";
+import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
+import Header from "../components/Header";
 // import context
 import { AuthContext } from "../context/Auth";
+import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 
 //***********
 // component
@@ -61,17 +58,17 @@ export default function AddRoomScreen({ navigation }) {
 
 	return (
 		<Container>
-			<CloseButton>
-				<IconButton
-					icon="close-circle-outline"
-					size={32}
-					color="#6466ee"
-					onPress={() => navigation.goBack()}
-				/>
-			</CloseButton>
-			<DismissKeyboard onPress={() => Keyboard.dismiss()}>
+			<>
+				<CloseButton>
+					<IconButton
+						icon="close-circle-outline"
+						size={32}
+						color="#6466ee"
+						onPress={() => navigation.goBack()}
+					/>
+				</CloseButton>
 				<Main>
-					<StyledTitle>Create a new chat room</StyledTitle>
+					<Header>Create a new chat room</Header>
 					<FormInput
 						labelName="Room name"
 						value={roomName}
@@ -87,7 +84,7 @@ export default function AddRoomScreen({ navigation }) {
 						color="red"
 					/>
 				</Main>
-			</DismissKeyboard>
+			</>
 		</Container>
 	);
 }
@@ -95,27 +92,20 @@ export default function AddRoomScreen({ navigation }) {
 //***********
 // component
 //***********
-const styles = StyleSheet.create({
-	buttonLabel: {
-		fontSize: 18,
-	},
-});
-const Container = styled(View)`
-	flex: 1;
-`;
+const Container = styled(KeyboardFlexView)``;
 const CloseButton = styled(View)`
 	position: absolute;
 	top: 30px;
 	right: 0;
 	z-index: 1;
 `;
-const DismissKeyboard = styled(TouchableWithoutFeedback)``;
 const Main = styled(View)`
 	flex: 1;
 	justify-content: center;
 	align-items: center;
 `;
-const StyledTitle = styled(Title)`
-	font-size: 24px;
-	margin-bottom: 10px;
-`;
+const styles = StyleSheet.create({
+	buttonLabel: {
+		fontSize: 18,
+	},
+});

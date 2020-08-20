@@ -5,7 +5,7 @@ import { Divider } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
 // import components
-import FormButton from "../components/FormButton";
+import FormButton from "../components/Form/FormButton";
 import Loading from "../components/Loading";
 import SwipeToDelete from "../components/FlatList/SwipeToDelete";
 import Item from "../components/FlatList/Item";

@@ -107,7 +107,6 @@ export default function RoomScreen({ route }) {
 			renderBubble={bubbleComponent}
 			renderSend={sendComponent}
 			renderSystemmessage={systemMessageComponent}
-			showUserAvatar
 			alwaysShowSend
 			scrollToBottom
 			scrollToBottomComponent={scrollComponent}

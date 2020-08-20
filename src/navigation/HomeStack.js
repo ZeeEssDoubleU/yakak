@@ -74,8 +74,16 @@ export default function HomeStack() {
 			<Stack.Screen
 				name="Room"
 				component={RoomScreen}
-				options={({ route }) => ({
+				options={({ navigation, route }) => ({
 					title: route.params.thread.name,
+					headerLeft: () => (
+						<GoBack
+							icon="arrow-left"
+							size={28}
+							color="white"
+							onPress={() => navigation.goBack()}
+						/>
+					),
 				})}
 			/>
 		</Stack.Navigator>
@@ -87,4 +95,5 @@ export default function HomeStack() {
 //***********
 
 const AddRoom = styled(IconButton)``;
+const GoBack = styled(IconButton)``;
 const Logout = styled(IconButton)``;

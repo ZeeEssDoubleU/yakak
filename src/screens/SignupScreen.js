@@ -1,10 +1,11 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet } from "react-native";
 import { Title, IconButton } from "react-native-paper";
 import styled from "styled-components/native";
 // import components
-import FormInput from "../components/FormInput";
-import FormButton from "../components/FormButton";
+import FormInput from "../components/Form/FormInput";
+import FormButton from "../components/Form/FormButton";
+import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
+import Header from "../components/Header";
 // import context
 import { AuthContext } from "../context/Auth";
 
@@ -19,30 +20,34 @@ export default function SignupScreen({ navigation }) {
 
 	return (
 		<Container>
-			<Header>Register to yak!</Header>
-			<FormInput
-				labelName="Email"
-				value={email}
-				autoCapitalize="none"
-				onChangeText={(userEmail) => setEmail(userEmail)}
-			/>
-			<FormInput
-				labelName="Password"
-				value={password}
-				secureTextEntry={true}
-				onChangeText={(userPassword) => setPassword(userPassword)}
-			/>
-			<SignupButton
-				title="Signup"
-				modeValue="contained"
-				onPress={() => register(email, password)}
-			/>
-			<NavButton
-				icon="keyboard-backspace"
-				size={30}
-				color="#6646ee"
-				onPress={() => navigation.navigate("Login")}
-			/>
+			<>
+				<Header>Register to yak!</Header>
+				<FormInput
+					labelName="Email"
+					value={email}
+					autoCapitalize="none"
+					onChangeText={(userEmail) => setEmail(userEmail)}
+				/>
+				<FormInput
+					labelName="Password"
+					value={password}
+					secureTextEntry={true}
+					onChangeText={(userPassword) => setPassword(userPassword)}
+				/>
+				<SignupButton
+					title="Signup"
+					modeValue="contained"
+					onPress={() => register(email, password)}
+				/>
+				<NavButton
+					icon="keyboard-backspace"
+					size={30}
+					color="#6646ee"
+					onPress={() => {
+						navigation.navigate("Login");
+					}}
+				/>
+			</>
 		</Container>
 	);
 }
@@ -51,16 +56,7 @@ export default function SignupScreen({ navigation }) {
 // styles
 //***********
 
-const Container = styled(View)`
-	background-color: #f5f5f5;
-	flex: 1;
-	justify-content: center;
-	align-items: center;
-`;
-const Header = styled(Title)`
-	font-size: 24px;
-	margin-bottom: 10px;
-`;
+const Container = styled(KeyboardFlexView)``;
 const SignupButton = styled(FormButton)`
 	font-size: 22px;
 `;
