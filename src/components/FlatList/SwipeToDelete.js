@@ -34,11 +34,12 @@ import {
 import styled from "styled-components/native";
 // import components
 import SwipeActions from "./SwipeActions";
+// get dimensions
+const { width } = Dimensions.get("window");
 
 //***********
 // component
 //***********
-// TODO: prevent room removal by non owners
 // TODO: only allow one room on list to be swiped at a time
 
 // TODO: create theme component
@@ -55,7 +56,6 @@ export default function SwipeToDelete({ onRemove, item, children }) {
 	const containerHeight = 74;
 	const snapPoints = [-100, 0];
 	// gesture states
-	const { width } = Dimensions.get("window");
 	const height = useValue(containerHeight);
 	const offsetX = useValue(0); // origin before gesture
 	const translateX = useValue(0); // diff from origin

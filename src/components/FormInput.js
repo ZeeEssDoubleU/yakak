@@ -2,9 +2,8 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { TextInput } from "react-native-paper";
 import styled from "styled-components/native";
-
-// get device size
-const { width, height } = Dimensions.get("screen");
+// get dimensions
+const { width, height } = Dimensions.get("window");
 
 //***********
 // component

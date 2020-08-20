@@ -111,7 +111,7 @@ const RemoveContainer = styled(Container)`
 	height: 100%;
 	background-color: #d93f12;
 	background-color: ${(props) =>
-		props.isOwner() === false ? "#d93f12" : "lightgrey"};
+		props.isOwner() === true ? "#d93f12" : "#d5d5d5"};
 `;
 const RemoveIcon = styled(IconButton)``;
 const RemoveText = styled(Text)`

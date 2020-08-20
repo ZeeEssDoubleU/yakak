@@ -84,6 +84,7 @@ export default function AddRoomScreen({ navigation }) {
 						onPress={createRoom}
 						disabled={roomName.length === 0}
 						labelStyle={styles.buttonLabel}
+						color="red"
 					/>
 				</Main>
 			</DismissKeyboard>
