@@ -5,8 +5,8 @@ import {
 	StyleSheet,
 	Dimensions,
 	TouchableWithoutFeedback,
+	Alert,
 } from "react-native";
-import styled from "styled-components/native";
 import { State, PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
 	cond,
@@ -31,24 +31,20 @@ import {
 	useClock,
 	min,
 } from "react-native-redash";
+import styled from "styled-components/native";
 // import components
 import SwipeActions from "./SwipeActions";
 
 //***********
 // component
 //***********
-// TODO: add confirmation when clicking remove
 // TODO: prevent room removal by non owners
 // TODO: only allow one room on list to be swiped at a time
-// TODO: find better format for logout button
-// consider adding bottom toolbar
-// consider adding top left icon
 
-// TODO: add actual remove functionality from firestore
-// TODO: add scroll to list
-// not working since adding swipe to delete
+// TODO: create theme component
+// TODO: add dark mode
 
-export default function SwipeToDelete({ onRemove, children }) {
+export default function SwipeToDelete({ onRemove, item, children }) {
 	const {
 		gestureHandler,
 		translation,
@@ -107,18 +103,19 @@ export default function SwipeToDelete({ onRemove, children }) {
 		],
 		[onRemove],
 	);
+
 	return (
 		<Container style={{ height }}>
-			<TouchableWithoutFeedback onPress={() => shouldRemove.setValue(1)}>
-				<Underlay style={{ ...StyleSheet.absoluteFillObject }}>
-					<SwipeActions
-						height={containerHeight}
-						x={abs(translateX)}
-						{...{ deleteOpacity }}
-					/>
-				</Underlay>
-			</TouchableWithoutFeedback>
-			<PanGestureHandler {...gestureHandler}>
+			<Underlay style={{ ...StyleSheet.absoluteFillObject }}>
+				<SwipeActions
+					height={containerHeight}
+					x={abs(translateX)}
+					{...{ deleteOpacity }}
+					{...{ item }}
+					{...{ shouldRemove }}
+				/>
+			</Underlay>
+			<PanGestureHandler {...gestureHandler} activeOffsetX={[-8, 8]}>
 				<Overlay style={{ transform: [{ translateX }] }}>
 					{children}
 				</Overlay>

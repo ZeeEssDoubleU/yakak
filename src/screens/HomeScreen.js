@@ -45,10 +45,13 @@ export default function HomeScreen({ navigation }) {
 	}, []);
 
 	// deletes thread and updates flatlist display
-	function handleRemove(item) {
+	async function handleRemove(item) {
+		// update ui state
 		const updateThreads = [...threads];
 		updateThreads.splice(updateThreads.indexOf(item), 1);
 		setThreads(updateThreads);
+		// delete from firestore
+		firebase_firestore.collection("THREADS").doc(item._id).delete();
 	}
 
 	if (loading) return <Loading />;
@@ -60,16 +63,18 @@ export default function HomeScreen({ navigation }) {
 				keyExtractor={(item) => item._id}
 				ItemSeparatorComponent={() => <Divider />}
 				renderItem={({ item }) => (
-					<SwipeToDelete onRemove={() => handleRemove(item)}>
-						<Item item={item} {...{ navigation }} />
+					<SwipeToDelete onRemove={() => handleRemove(item)} {...{ item }}>
+						<Item {...{ item }} {...{ navigation }} />
 					</SwipeToDelete>
 				)}
+				ListEmptyComponent={
+					<AddRoomButton
+						title="AddRoom"
+						modeValue="contained"
+						onPress={() => navigation.navigate("AddRoom")}
+					/>
+				}
 			/>
-			{/* <Logout
-				modeValue="contained"
-				title="Logout"
-				onPress={() => logout()}
-			/> */}
 		</Container>
 	);
 }
@@ -78,6 +83,10 @@ export default function HomeScreen({ navigation }) {
 // styles
 //***********
 
+const AddRoomButton = styled(FormButton)`
+	font-size: 22px;
+	align-self: center;
+`;
 const Container = styled(View)`
 	background-color: #f5f5f5;
 	flex: 1;

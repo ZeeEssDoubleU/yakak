@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
 	View,
 	Text,
@@ -13,6 +13,8 @@ import { format } from "date-fns/fp";
 // import components
 import FormButton from "../components/FormButton";
 import FormInput from "../components/FormInput";
+// import context
+import { AuthContext } from "../context/Auth";
 
 //***********
 // component
@@ -20,12 +22,16 @@ import FormInput from "../components/FormInput";
 
 export default function AddRoomScreen({ navigation }) {
 	const [roomName, setRoomName] = useState("");
+	const { user } = useContext(AuthContext);
 
 	async function createRoom() {
 		if (roomName.length > 0) {
+			// format time
 			const createdAt = Date.now();
 			const local = new Date(Date.now());
 			const formatTime = format("h:mm a")(local);
+
+			const currentUser = { _id: user.uid, email: user.email };
 
 			// for permissions info
 			// https://firebase.google.com/docs/firestore/security/get-started#auth-required
@@ -37,6 +43,8 @@ export default function AddRoomScreen({ navigation }) {
 						text: `Room created at ${formatTime}`,
 						createdAt,
 					},
+					owner: currentUser,
+					admin: [currentUser],
 				})
 				// docRef used to reference collection right after creation
 				.then((docRef) => {
@@ -55,8 +63,8 @@ export default function AddRoomScreen({ navigation }) {
 		<Container>
 			<CloseButton>
 				<IconButton
-					icon="close-circle"
-					size={36}
+					icon="close-circle-outline"
+					size={32}
 					color="#6466ee"
 					onPress={() => navigation.goBack()}
 				/>
@@ -73,7 +81,7 @@ export default function AddRoomScreen({ navigation }) {
 					<FormButton
 						title="Create"
 						mode="contained"
-						onPress={() => createRoom()}
+						onPress={createRoom}
 						disabled={roomName.length === 0}
 						labelStyle={styles.buttonLabel}
 					/>

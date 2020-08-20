@@ -1,21 +1,43 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 import { createStackNavigator } from "@react-navigation/stack";
 import { IconButton } from "react-native-paper";
+import { firebase_firestore } from "../config/firebase";
+import styled from "styled-components/native";
 // import components
 import HomeScreen from "../screens/HomeScreen";
 import AddRoomScreen from "../screens/AddRoomScreen";
 import RoomScreen from "../screens/RoomScreen";
-
-const ChatAppStack = createStackNavigator();
-const ModalStack = createStackNavigator();
+// import context
+import { AuthContext } from "../context/Auth";
+// create nav stacks
+const Stack = createStackNavigator();
 
 //***********
 // component
 //***********
 
-function ChatApp() {
+export default function HomeStack() {
+	const { logout } = useContext(AuthContext);
+	const { showActionSheetWithOptions } = useActionSheet();
+
+	const logoutActions = () => {
+		showActionSheetWithOptions(
+			{
+				message: "Are you sure you want to logout?",
+				options: ["Logout", "Cancel"],
+				cancelButtonIndex: 1,
+				destructiveButtonIndex: 0,
+			},
+			(buttonIndex) => {
+				if (buttonIndex === 0) return logout();
+				else if (buttonIndex === 1) return null;
+			},
+		);
+	};
+
 	return (
-		<ChatAppStack.Navigator
+		<Stack.Navigator
 			initialRouteName="Home"
 			screenOptions={{
 				headerStyle: {
@@ -27,36 +49,42 @@ function ChatApp() {
 				},
 			}}
 		>
-			<ChatAppStack.Screen
+			<Stack.Screen
 				name="Home"
 				component={HomeScreen}
 				options={({ navigation }) => ({
 					headerRight: () => (
-						<IconButton
-							icon="message-plus"
+						<AddRoom
+							icon="comment-plus-outline"
 							size={28}
 							color="white"
 							onPress={() => navigation.navigate("AddRoom")}
 						/>
 					),
+					headerLeft: () => (
+						<Logout
+							icon="account-arrow-left-outline"
+							size={28}
+							color="white"
+							onPress={logoutActions}
+						/>
+					),
 				})}
 			/>
-			<ChatAppStack.Screen
+			<Stack.Screen
 				name="Room"
 				component={RoomScreen}
 				options={({ route }) => ({
 					title: route.params.thread.name,
 				})}
 			/>
-		</ChatAppStack.Navigator>
+		</Stack.Navigator>
 	);
 }
 
-export default function HomeStack() {
-	return (
-		<ModalStack.Navigator mode="modal" headerMode="none">
-			<ModalStack.Screen name="ChatApp" component={ChatApp} />
-			<ModalStack.Screen name="AddRoom" component={AddRoomScreen} />
-		</ModalStack.Navigator>
-	);
-}
+//***********
+// styles
+//***********
+
+const AddRoom = styled(IconButton)``;
+const Logout = styled(IconButton)``;

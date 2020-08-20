@@ -3,8 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 // import screens
 import SignupScreen from "../screens/SignupScreen";
 import LoginScreen from "../screens/LoginScreen";
-
+// create nav stack
 const Stack = createStackNavigator();
+
+//***********
+// component
+//***********
 
 export default function AuthStack() {
 	return (

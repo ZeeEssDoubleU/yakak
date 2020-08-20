@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Text, SafeAreaView } from "react-native";
 // import components
 import AuthStack from "../navigation/AuthStack";
-import HomeStack from "../navigation/HomeStack";
+import HomeStack from "../navigation/ModalStack"; // HomeStack nested within ModalStack
 import { AuthContext } from "../context/Auth";
 import Loading from "../components/Loading";
 
@@ -29,6 +29,7 @@ export default function Routes() {
 
 	return (
 		<NavigationContainer>
+			{/* HomeStack nested within ModalStack */}
 			{user ? <HomeStack /> : <AuthStack />}
 		</NavigationContainer>
 	);
