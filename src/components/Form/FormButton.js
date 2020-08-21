@@ -9,12 +9,8 @@ const { width, height } = Dimensions.get("window");
 // component
 //***********
 
-export default function FormButton({ title, modeValue, ...props }) {
-	return (
-		<StyledButton mode={modeValue} {...props}>
-			{title}
-		</StyledButton>
-	);
+export default function FormButton({ title, ...props }) {
+	return <StyledButton {...props}>{title}</StyledButton>;
 }
 
 //***********

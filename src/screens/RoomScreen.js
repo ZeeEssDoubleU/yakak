@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
-import { IconButton } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
 // import context
@@ -12,6 +12,7 @@ import { AuthContext } from "../context/Auth";
 //***********
 
 export default function RoomScreen({ route }) {
+	const { colors } = useTheme();
 	const { thread } = route.params;
 	const { user } = useContext(AuthContext);
 	const currentUser = user.toJSON();
@@ -69,34 +70,36 @@ export default function RoomScreen({ route }) {
 	const bubbleComponent = (props) => (
 		<Bubble
 			{...props}
-			wrapperStyle={{ right: styles.background }}
-			textStyle={{ right: styles.bubbleText }}
+			wrapperStyle={{
+				right: { backgroundColor: styles.bubble.backgroundColor },
+			}}
+			textStyle={{
+				right: { color: styles.bubble.color },
+			}}
 		/>
 	);
 	const sendComponent = (props) => (
 		<Send {...props}>
 			<SendContainer>
-				<IconButton icon="send" size={32} color="#6646ee" />
+				<IconButton icon="send" size={32} color={colors.primary} />
 			</SendContainer>
 		</Send>
 	);
 	const scrollComponent = (props) => (
 		<FlexContainer>
-			<IconButton icon="chevron-double-down" size={36} color="#6646ee" />
+			<IconButton
+				icon="chevron-double-down"
+				size={36}
+				color={colors.primary}
+			/>
 		</FlexContainer>
 	);
 	const loadingComponent = (props) => (
 		<FlexContainer>
-			<ActivityIndicator size="large" color="#6646ee" />
+			<ActivityIndicator size="large" color={colors.primary} />
 		</FlexContainer>
 	);
-	const systemMessageComponent = (props) => (
-		<SystemMessage
-			{...props}
-			wrapperStyle={styles.background}
-			textStyle={styles.systemMessageText}
-		/>
-	);
+	const systemMessageComponent = (props) => <SystemMessage {...props} />;
 
 	return (
 		<GiftedChat
@@ -118,19 +121,7 @@ export default function RoomScreen({ route }) {
 // styles
 //***********
 
-const styles = StyleSheet.create({
-	background: {
-		backgroundColor: "#6646ee",
-	},
-	bubbleText: {
-		color: "white",
-	},
-	systemMessageText: {
-		fontSize: 14,
-		color: "white",
-		fontWeight: "bold",
-	},
-});
+import { theme } from "../styles/theme";
 const Container = styled(View)`
 	justify-content: center;
 	align-items: center;
@@ -138,6 +129,12 @@ const Container = styled(View)`
 const SendContainer = styled(Container)`
 	height: 100%;
 `;
+const styles = StyleSheet.create({
+	bubble: {
+		backgroundColor: theme.colors.primary,
+		color: theme.colors.text_light,
+	},
+});
 const FlexContainer = styled(Container)`
 	flex: 1;
 `;

@@ -130,10 +130,10 @@ export default function SwipeToDelete({ onRemove, item, children }) {
 
 const Container = styled(Animated.View)``;
 const Overlay = styled(Animated.View)`
-	background-color: white;
+	background-color: ${(props) => props.theme.colors.surface};
 `;
 const Underlay = styled(View)`
-	background-color: #e1e2e3;
+	background-color: ${(props) => props.theme.colors.surface_bg};
 	flex-direction: row;
 	justify-content: flex-end;
 	align-items: center;

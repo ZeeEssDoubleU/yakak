@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Keyboard } from "react-native";
 import styled from "styled-components/native";
 // import components
 import FormInput from "../components/Form/FormInput";
@@ -36,12 +37,12 @@ export default function LoginScreen({ navigation }) {
 				/>
 				<LoginButton
 					title="Login"
-					modeValue="contained"
+					mode="contained"
 					onPress={() => login(email, password)}
 				/>
 				<NavButton
 					title="New user? Join here"
-					modeValue="text"
+					mode="text"
 					uppercase={false}
 					onPress={() => {
 						Keyboard.dismiss();

@@ -88,7 +88,7 @@ const AddRoomButton = styled(FormButton)`
 	align-self: center;
 `;
 const Container = styled(View)`
-	background-color: #f5f5f5;
+	background-color: ${(props) => props.theme.colors.surface_bg};
 	flex: 1;
 `;
 const Logout = styled(FormButton)`

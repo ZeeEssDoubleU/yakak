@@ -6,6 +6,10 @@ import AddRoomScreen from "../screens/AddRoomScreen";
 const Stack = createStackNavigator();
 import HomeStack from "./HomeStack";
 
+//***********
+// component
+//***********
+
 export default function ModalStack() {
 	return (
 		<Stack.Navigator mode="modal" headerMode="none">

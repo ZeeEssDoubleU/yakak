@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text } from "react-native";
-import { IconButton } from "react-native-paper";
+import { IconButton, useTheme, Button } from "react-native-paper";
 import styled from "styled-components/native";
 import Animated, {
 	divide,
@@ -28,8 +28,9 @@ export default function SwipeActions({
 	item,
 	shouldRemove,
 }) {
+	const { colors } = useTheme();
 	const { user } = useContext(AuthContext);
-	//
+	// swipe actions layout/animation props
 	const size = x;
 	const iconOpacity = interpolate(size, {
 		inputRange: [height - 10, height + 10],
@@ -81,7 +82,7 @@ export default function SwipeActions({
 						opacity: iconOpacity,
 					}}
 				>
-					<RemoveIcon icon="minus" size={28} color="white" />
+					<RemoveIcon icon="minus" size={28} color={colors.text_light} />
 				</IconContainer>
 				<TextContainer
 					style={{
@@ -109,13 +110,15 @@ const ActionsContainer = styled(Container)``;
 const IconContainer = styled(Container)``;
 const RemoveContainer = styled(Container)`
 	height: 100%;
-	background-color: #d93f12;
+	background-color: ${(props) => props.theme.colors.danger};
 	background-color: ${(props) =>
-		props.isOwner() === true ? "#d93f12" : "#d5d5d5"};
+		props.isOwner() === true
+			? props.theme.colors.danger
+			: props.theme.colors.disabled};
 `;
 const RemoveIcon = styled(IconButton)``;
 const RemoveText = styled(Text)`
-	color: white;
+	color: ${(props) => props.theme.colors.text_light};
 	font-size: 14px;
 `;
 const TextContainer = styled(Container)``;

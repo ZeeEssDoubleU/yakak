@@ -22,7 +22,7 @@ export default function KeyboardFlexView({ children }) {
 //***********
 
 const Container = styled(KeyboardAvoidingView)`
-	background-color: #f5f5f5;
+	background-color: ${(props) => props.theme.colors.surface_bg};
 	flex: 1;
 	justify-content: center;
 	align-items: center;

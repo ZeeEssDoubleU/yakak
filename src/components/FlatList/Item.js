@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { List, Title, IconButton } from "react-native-paper";
+import { List, Title, IconButton, useTheme } from "react-native-paper";
 import { format } from "date-fns/fp";
 import styled from "styled-components/native";
 
@@ -9,6 +9,7 @@ import styled from "styled-components/native";
 //***********
 
 export default function Item({ item, navigation }) {
+	const { colors } = useTheme();
 	// right side of list item (ie time and arrow icon)
 	const rightComponent = () => {
 		// format time
@@ -19,7 +20,7 @@ export default function Item({ item, navigation }) {
 		return (
 			<RightContainer>
 				<Time>{formatTime}</Time>
-				<StyledIcon icon="chevron-right" color={"rgba(0, 0, 0, 0.54)"} />
+				<StyledIcon icon="chevron-right" color={colors.text_medium} />
 			</RightContainer>
 		);
 	};
@@ -47,17 +48,13 @@ const RightContainer = styled(View)`
 	align-items: center;
 `;
 const styles = StyleSheet.create({
-	listTitle: {
-		fontSize: 22,
-	},
-	listDescription: {
-		fontSize: 16,
-	},
+	listTitle: { fontSize: 22 },
+	listDescription: { fontSize: 16 },
 });
 const StyledIcon = styled(IconButton)`
 	display: flex;
 	margin: 0;
 `;
 const Time = styled(Text)`
-	color: rgba(0, 0, 0, 0.54);
+	color: ${(props) => props.theme.colors.text_medium};
 `;

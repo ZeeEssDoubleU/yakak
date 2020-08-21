@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Title, IconButton } from "react-native-paper";
+import { Title, IconButton, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 // import components
 import FormInput from "../components/Form/FormInput";
@@ -14,40 +14,39 @@ import { AuthContext } from "../context/Auth";
 //***********
 
 export default function SignupScreen({ navigation }) {
+	const { colors } = useTheme();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { register } = useContext(AuthContext);
 
 	return (
 		<Container>
-			<>
-				<Header>Register to yak!</Header>
-				<FormInput
-					labelName="Email"
-					value={email}
-					autoCapitalize="none"
-					onChangeText={(userEmail) => setEmail(userEmail)}
-				/>
-				<FormInput
-					labelName="Password"
-					value={password}
-					secureTextEntry={true}
-					onChangeText={(userPassword) => setPassword(userPassword)}
-				/>
-				<SignupButton
-					title="Signup"
-					modeValue="contained"
-					onPress={() => register(email, password)}
-				/>
-				<NavButton
-					icon="keyboard-backspace"
-					size={30}
-					color="#6646ee"
-					onPress={() => {
-						navigation.navigate("Login");
-					}}
-				/>
-			</>
+			<Header>Register to yak!</Header>
+			<FormInput
+				labelName="Email"
+				value={email}
+				autoCapitalize="none"
+				onChangeText={(userEmail) => setEmail(userEmail)}
+			/>
+			<FormInput
+				labelName="Password"
+				value={password}
+				secureTextEntry={true}
+				onChangeText={(userPassword) => setPassword(userPassword)}
+			/>
+			<SignupButton
+				title="Signup"
+				mode="contained"
+				onPress={() => register(email, password)}
+			/>
+			<NavButton
+				icon="keyboard-backspace"
+				size={30}
+				color={colors.primary}
+				onPress={() => {
+					navigation.navigate("Login");
+				}}
+			/>
 		</Container>
 	);
 }

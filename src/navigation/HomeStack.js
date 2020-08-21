@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { createStackNavigator } from "@react-navigation/stack";
-import { IconButton } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
 import styled from "styled-components/native";
 // import components
@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 //***********
 
 export default function HomeStack() {
+	const { colors } = useTheme();
 	const { logout } = useContext(AuthContext);
 	const { showActionSheetWithOptions } = useActionSheet();
 
@@ -41,9 +42,9 @@ export default function HomeStack() {
 			initialRouteName="Home"
 			screenOptions={{
 				headerStyle: {
-					backgroundColor: "#6646ee",
+					backgroundColor: colors.primary,
 				},
-				headerTintColor: "#ffffff",
+				headerTintColor: colors.text_light,
 				headerTitleStyle: {
 					fontSize: 22,
 				},
@@ -57,7 +58,7 @@ export default function HomeStack() {
 						<AddRoom
 							icon="comment-plus-outline"
 							size={28}
-							color="white"
+							color={colors.text_light}
 							onPress={() => navigation.navigate("AddRoom")}
 						/>
 					),
@@ -65,7 +66,7 @@ export default function HomeStack() {
 						<Logout
 							icon="account-arrow-left-outline"
 							size={28}
-							color="white"
+							color={colors.text_light}
 							onPress={logoutActions}
 						/>
 					),
@@ -80,7 +81,7 @@ export default function HomeStack() {
 						<GoBack
 							icon="arrow-left"
 							size={28}
-							color="white"
+							color={colors.text_light}
 							onPress={() => navigation.goBack()}
 						/>
 					),

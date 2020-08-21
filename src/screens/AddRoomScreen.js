@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import styled from "styled-components/native";
-import { IconButton, Title } from "react-native-paper";
+import { IconButton, Title, useTheme } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
 import { format } from "date-fns/fp";
 // import components
@@ -18,6 +18,7 @@ import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 //***********
 
 export default function AddRoomScreen({ navigation }) {
+	const { colors } = useTheme();
 	const [roomName, setRoomName] = useState("");
 	const { user } = useContext(AuthContext);
 
@@ -58,33 +59,30 @@ export default function AddRoomScreen({ navigation }) {
 
 	return (
 		<Container>
-			<>
-				<CloseButton>
-					<IconButton
-						icon="close-circle-outline"
-						size={32}
-						color="#6466ee"
-						onPress={() => navigation.goBack()}
-					/>
-				</CloseButton>
-				<Main>
-					<Header>Create a new chat room</Header>
-					<FormInput
-						labelName="Room name"
-						value={roomName}
-						onChangeText={(text) => setRoomName(text)}
-						clearButtonMode="while-editing"
-					/>
-					<FormButton
-						title="Create"
-						mode="contained"
-						onPress={createRoom}
-						disabled={roomName.length === 0}
-						labelStyle={styles.buttonLabel}
-						color="red"
-					/>
-				</Main>
-			</>
+			<CloseButton>
+				<IconButton
+					icon="close-circle-outline"
+					size={32}
+					color={colors.primary}
+					onPress={() => navigation.goBack()}
+				/>
+			</CloseButton>
+			<Main>
+				<Header>Create a new chat room</Header>
+				<FormInput
+					labelName="Room name"
+					value={roomName}
+					onChangeText={(text) => setRoomName(text)}
+					clearButtonMode="while-editing"
+				/>
+				<FormButton
+					title="Create"
+					mode="contained"
+					onPress={createRoom}
+					disabled={roomName.length === 0}
+					labelStyle={styles.buttonLabel}
+				/>
+			</Main>
 		</Container>
 	);
 }

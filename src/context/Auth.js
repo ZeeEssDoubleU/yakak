@@ -19,7 +19,11 @@ export const AuthProvider = ({ children }) => {
 							password,
 						);
 					} catch (err) {
-						console.error(err);
+						const error = {
+							code: err.code,
+							message: err.message,
+						};
+						console.log(error);
 					}
 				},
 				register: async (email, password) => {
