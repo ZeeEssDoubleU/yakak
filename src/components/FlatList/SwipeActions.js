@@ -57,9 +57,9 @@ export default function SwipeActions({
 					},
 					(buttonIndex) => {
 						// delete button
-						if (buttonIndex === 0) return shouldRemove.setValue(1);
+						if (buttonIndex === 0) shouldRemove.setValue(1);
 						// cancel button
-						else if (buttonIndex === 1) return null;
+						else if (buttonIndex === 1) null;
 					},
 			  )
 			: showActionSheetWithOptions(

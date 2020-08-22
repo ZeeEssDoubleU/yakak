@@ -5,6 +5,16 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
+	const [errors, setErrors] = useState({});
+
+	const catchError = (err) => {
+		const error = {
+			code: err.code,
+			message: err.message,
+		};
+		setErrors(error);
+		// console.log(error); // ? debug
+	};
 
 	return (
 		<AuthContext.Provider
@@ -19,11 +29,7 @@ export const AuthProvider = ({ children }) => {
 							password,
 						);
 					} catch (err) {
-						const error = {
-							code: err.code,
-							message: err.message,
-						};
-						console.log(error);
+						catchError(err);
 					}
 				},
 				register: async (email, password) => {
@@ -33,16 +39,18 @@ export const AuthProvider = ({ children }) => {
 							password,
 						);
 					} catch (err) {
-						console.error(err);
+						catchError(err);
 					}
 				},
 				logout: async () => {
 					try {
 						await firebase_auth.signOut();
 					} catch (err) {
-						console.error(err);
+						catchError(err);
 					}
 				},
+				errors,
+				setErrors,
 			}}
 		>
 			{children}

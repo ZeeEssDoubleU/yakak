@@ -9,6 +9,7 @@ export const theme = {
 	colors: {
 		...DefaultTheme.colors,
 		primary: "hsla(206, 90%, 54%, 1.0)",
+		accent: "hsla(306, 2%, 14%, 1.0)",
 		text_light: "white",
 		text_medium: "hsla(109, 0%, 46%, 1.0)",
 		surface: "white",

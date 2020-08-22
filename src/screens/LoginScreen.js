@@ -7,6 +7,7 @@ import FormButton from "../components/Form/FormButton";
 import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
 import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
+import ScreenTransition from "../components/ScreenTransition";
 // import context
 import { AuthContext } from "../context/Auth";
 
@@ -17,23 +18,35 @@ import { AuthContext } from "../context/Auth";
 export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { login } = useContext(AuthContext);
+	const { login, errors } = useContext(AuthContext);
 
 	return (
-		<Container>
-			<>
+		<ScreenTransition>
+			<Container>
 				<Header>Welcome to Yakak</Header>
 				<FormInput
 					labelName="Email"
 					value={email}
 					autoCapitalize="none"
 					onChangeText={(userEmail) => setEmail(userEmail)}
+					error={
+						errors.code === "auth/user-not-found" ||
+						errors.code === "auth/invalid-email"
+							? errors
+							: false
+					}
 				/>
 				<FormInput
 					labelName="Password"
 					value={password}
 					secureTextEntry={true}
 					onChangeText={(userPassword) => setPassword(userPassword)}
+					error={
+						errors.code === "auth/wrong-password" ||
+						errors.code === "auth/too-many-requests"
+							? errors
+							: false
+					}
 				/>
 				<LoginButton
 					title="Login"
@@ -49,8 +62,8 @@ export default function LoginScreen({ navigation }) {
 						navigation.navigate("Signup");
 					}}
 				/>
-			</>
-		</Container>
+			</Container>
+		</ScreenTransition>
 	);
 }
 
