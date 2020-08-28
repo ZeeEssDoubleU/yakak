@@ -5,7 +5,7 @@ import { IconButton, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
 // import context
-import { AuthContext } from "../context/Auth";
+import { useAuth } from "../context/Auth";
 
 //***********
 // component
@@ -14,7 +14,7 @@ import { AuthContext } from "../context/Auth";
 export default function RoomScreen({ route }) {
 	const { colors } = useTheme();
 	const { thread } = route.params;
-	const { user } = useContext(AuthContext);
+	const { user } = useAuth();
 	const currentUser = user.toJSON();
 	const [messages, setMessages] = useState();
 

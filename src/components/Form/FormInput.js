@@ -6,7 +6,13 @@ import React, {
 	useLayoutEffect,
 } from "react";
 import { Dimensions, View } from "react-native";
-import { TextInput, HelperText, Button } from "react-native-paper";
+import {
+	TextInput,
+	HelperText,
+	Button,
+	IconButton,
+	useTheme,
+} from "react-native-paper";
 import styled from "styled-components/native";
 import Animated, {
 	useCode,
@@ -26,7 +32,16 @@ const { width, height } = Dimensions.get("window");
 // component
 //***********
 
-export default function FormInput({ labelName, error = false, ...props }) {
+export default function FormInput({
+	labelName,
+	error = false,
+	secureTextEntry = false,
+	...props
+}) {
+	const { colors } = useTheme();
+	// shows showText icon if secureTextEntry prop is present
+	const [showText, setShowText] = useState(!secureTextEntry);
+
 	const showError = useValue(false);
 	const errorHeight = useValue();
 
@@ -72,7 +87,17 @@ export default function FormInput({ labelName, error = false, ...props }) {
 
 	return (
 		<Container>
-			<Input label={labelName} {...props} />
+			<Wrapper>
+				{secureTextEntry && (
+					<ShowText
+						icon={showText ? "eye-off-outline" : "eye-outline"}
+						color={colors.disabled}
+						onPress={() => setShowText(!showText)}
+						size={22}
+					/>
+				)}
+				<Input label={labelName} secureTextEntry={!showText} {...props} />
+			</Wrapper>
 			<ErrorContainer
 				style={{
 					height,
@@ -104,7 +129,6 @@ const Container = styled(View)`
 	align-items: center;
 `;
 const ErrorContainer = styled(Animated.View)`
-	position: relative;
 	width: ${width / 1.5}px;
 	overflow: hidden;
 `;
@@ -120,4 +144,12 @@ const Input = styled(TextInput)`
 	margin: 10px 0;
 	width: ${width / 1.5}px;
 	height: ${height / 15}px;
+`;
+const ShowText = styled(IconButton)`
+	position: absolute;
+	right: 0;
+	z-index: 10;
+`;
+const Wrapper = styled(View)`
+	justify-content: center;
 `;

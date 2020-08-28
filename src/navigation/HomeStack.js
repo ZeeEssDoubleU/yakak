@@ -6,10 +6,9 @@ import { firebase_firestore } from "../config/firebase";
 import styled from "styled-components/native";
 // import components
 import HomeScreen from "../screens/HomeScreen";
-import AddRoomScreen from "../screens/AddRoomScreen";
 import RoomScreen from "../screens/RoomScreen";
 // import context
-import { AuthContext } from "../context/Auth";
+import { useAuth } from "../context/Auth";
 // create nav stacks
 const Stack = createStackNavigator();
 
@@ -19,7 +18,7 @@ const Stack = createStackNavigator();
 
 export default function HomeStack() {
 	const { colors } = useTheme();
-	const { logout } = useContext(AuthContext);
+	const { logout } = useAuth();
 	const { showActionSheetWithOptions } = useActionSheet();
 
 	const logoutActions = () => {
@@ -64,10 +63,10 @@ export default function HomeStack() {
 					),
 					headerLeft: () => (
 						<Logout
-							icon="account-arrow-left-outline"
+							icon="account-outline"
 							size={28}
 							color={colors.text_light}
-							onPress={logoutActions}
+							onPress={() => navigation.navigate("Account")}
 						/>
 					),
 				})}

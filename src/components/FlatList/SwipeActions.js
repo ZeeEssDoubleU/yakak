@@ -15,7 +15,7 @@ import Animated, {
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 // import context
-import { AuthContext } from "../../context/Auth";
+import { useAuth } from "../../context/Auth";
 
 //***********
 // component
@@ -29,7 +29,7 @@ export default function SwipeActions({
 	shouldRemove,
 }) {
 	const { colors } = useTheme();
-	const { user } = useContext(AuthContext);
+	const { user } = useAuth();
 	// swipe actions layout/animation props
 	const size = x;
 	const iconOpacity = interpolate(size, {

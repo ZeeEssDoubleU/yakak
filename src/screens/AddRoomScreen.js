@@ -10,7 +10,7 @@ import FormInput from "../components/Form/FormInput";
 import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
 // import context
-import { AuthContext } from "../context/Auth";
+import { useAuth } from "../context/Auth";
 import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 
 //***********
@@ -20,7 +20,7 @@ import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 export default function AddRoomScreen({ navigation }) {
 	const { colors } = useTheme();
 	const [roomName, setRoomName] = useState("");
-	const { user } = useContext(AuthContext);
+	const { user } = useAuth();
 
 	async function createRoom() {
 		if (roomName.length > 0) {

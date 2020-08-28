@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "yakak",
+    "name": "Yakak",
     "slug": "yakak",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,6 +21,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "A basic chat message app.  Built with React Native and Firebase.",
+    "githubUrl": "https://github.com/ZeeEssDoubleU/yakak"
   }
 }

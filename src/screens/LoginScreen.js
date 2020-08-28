@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }) {
 					labelName="Email"
 					value={email}
 					autoCapitalize="none"
-					onChangeText={(userEmail) => setEmail(userEmail)}
+					onChangeText={(input) => setEmail(input)}
 					error={
 						errors.code === "auth/user-not-found" ||
 						errors.code === "auth/invalid-email"
@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
 					labelName="Password"
 					value={password}
 					secureTextEntry={true}
-					onChangeText={(userPassword) => setPassword(userPassword)}
+					onChangeText={(input) => setPassword(input)}
 					error={
 						errors.code === "auth/wrong-password" ||
 						errors.code === "auth/too-many-requests"

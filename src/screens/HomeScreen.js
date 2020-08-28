@@ -10,14 +10,14 @@ import Loading from "../components/Loading";
 import SwipeToDelete from "../components/FlatList/SwipeToDelete";
 import Item from "../components/FlatList/Item";
 // import context
-import { AuthContext } from "../context/Auth";
+import { useAuth } from "../context/Auth";
 
 //***********
 // compoenent
 //***********
 
 export default function HomeScreen({ navigation }) {
-	const { user, logout } = useContext(AuthContext);
+	const { user, logout } = useAuth();
 	const [threads, setThreads] = useState([]);
 	const [loading, setLoading] = useState([]);
 

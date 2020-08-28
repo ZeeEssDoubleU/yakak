@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
 import { Title, IconButton, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 // import components
@@ -8,7 +9,7 @@ import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 import Header from "../components/Header";
 import ScreenTransition from "../components/ScreenTransition";
 // import context
-import { AuthContext } from "../context/Auth";
+import { useAuth } from "../context/Auth";
 
 //***********
 // component
@@ -18,7 +19,13 @@ export default function SignupScreen({ navigation }) {
 	const { colors } = useTheme();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { register, errors } = useContext(AuthContext);
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [errors, setErrors] = useState({});
+	const { register, errors: authErrors } = useAuth();
+
+	useEffect(() => {
+		if (authErrors) setErrors(authErrors);
+	}, [authErrors]);
 
 	return (
 		<ScreenTransition>
@@ -28,16 +35,27 @@ export default function SignupScreen({ navigation }) {
 					labelName="Email"
 					value={email}
 					autoCapitalize="none"
-					onChangeText={(userEmail) => setEmail(userEmail)}
+					onChangeText={(input) => setEmail(input)}
 					error={errors.code === "auth/invalid-email" ? errors : false}
 				/>
-				<FormInput
+
+				<PasswordInput
 					labelName="Password"
 					value={password}
+					Icon
 					secureTextEntry={true}
-					onChangeText={(userPassword) => setPassword(userPassword)}
+					onChangeText={(input) => setPassword(input)}
 					error={errors.code === "auth/weak-password" ? errors : false}
 				/>
+
+				<FormInput
+					labelName="Comfirm Password"
+					value={confirmPassword}
+					secureTextEntry={true}
+					onChangeText={(input) => setConfirmPassword(input)}
+					error={errors.code === "auth/weak-password" ? errors : false}
+				/>
+
 				<SignupButton
 					title="Signup"
 					mode="contained"
@@ -61,10 +79,11 @@ export default function SignupScreen({ navigation }) {
 //***********
 
 const Container = styled(KeyboardFlexView)``;
-const SignupButton = styled(FormButton)`
-	font-size: 22px;
-`;
 const NavButton = styled(IconButton)`
 	margin-top: 10px;
 	font-size: 18px;
+`;
+const PasswordInput = styled(FormInput)``;
+const SignupButton = styled(FormButton)`
+	font-size: 22px;
 `;
