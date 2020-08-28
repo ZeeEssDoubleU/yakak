@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 // import components
 import FormInput from "../components/Form/FormInput";
 import FormButton from "../components/Form/FormButton";
+import AuthInput from "../components/Auth/AuthInput";
 import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
 import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
@@ -24,7 +25,7 @@ export default function LoginScreen({ navigation }) {
 		<ScreenTransition>
 			<Container>
 				<Header>Welcome to Yakak</Header>
-				<FormInput
+				<AuthInput
 					labelName="Email"
 					value={email}
 					autoCapitalize="none"
@@ -36,7 +37,7 @@ export default function LoginScreen({ navigation }) {
 							: false
 					}
 				/>
-				<FormInput
+				<AuthInput
 					labelName="Password"
 					value={password}
 					secureTextEntry={true}

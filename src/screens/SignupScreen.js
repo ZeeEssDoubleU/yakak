@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 // import components
 import FormInput from "../components/Form/FormInput";
 import FormButton from "../components/Form/FormButton";
+import AuthInput from "../components/Auth/AuthInput";
 import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
 import Header from "../components/Header";
 import ScreenTransition from "../components/ScreenTransition";
@@ -27,11 +28,17 @@ export default function SignupScreen({ navigation }) {
 		if (authErrors) setErrors(authErrors);
 	}, [authErrors]);
 
+	const handleRegister = () => {
+		if (confirmPassword !== password)
+			setErrors({ code: "auth/passwords-dont-match" });
+		else register(email, password);
+	};
+
 	return (
 		<ScreenTransition>
 			<Container>
 				<Header>Register to yak!</Header>
-				<FormInput
+				<AuthInput
 					labelName="Email"
 					value={email}
 					autoCapitalize="none"
@@ -39,27 +46,28 @@ export default function SignupScreen({ navigation }) {
 					error={errors.code === "auth/invalid-email" ? errors : false}
 				/>
 
-				<PasswordInput
+				<AuthInput
 					labelName="Password"
 					value={password}
-					Icon
 					secureTextEntry={true}
 					onChangeText={(input) => setPassword(input)}
 					error={errors.code === "auth/weak-password" ? errors : false}
 				/>
 
-				<FormInput
+				<AuthInput
 					labelName="Comfirm Password"
 					value={confirmPassword}
 					secureTextEntry={true}
 					onChangeText={(input) => setConfirmPassword(input)}
-					error={errors.code === "auth/weak-password" ? errors : false}
+					error={
+						errors.code === "auth/passwords-dont-match" ? errors : false
+					}
 				/>
 
 				<SignupButton
 					title="Signup"
 					mode="contained"
-					onPress={() => register(email, password)}
+					onPress={handleRegister}
 				/>
 				<NavButton
 					icon="keyboard-backspace"
@@ -83,7 +91,6 @@ const NavButton = styled(IconButton)`
 	margin-top: 10px;
 	font-size: 18px;
 `;
-const PasswordInput = styled(FormInput)``;
 const SignupButton = styled(FormButton)`
 	font-size: 22px;
 `;

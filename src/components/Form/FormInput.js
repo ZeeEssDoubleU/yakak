@@ -25,6 +25,7 @@ import Animated, {
 	debug,
 } from "react-native-reanimated";
 import { useValue, timing } from "react-native-redash";
+import isEmpty from "lodash/fp/isEmpty";
 // get dimensions
 const { width, height } = Dimensions.get("window");
 
@@ -34,37 +35,20 @@ const { width, height } = Dimensions.get("window");
 
 export default function FormInput({
 	labelName,
-	error = false,
 	secureTextEntry = false,
+	error = false,
 	...props
 }) {
 	const { colors } = useTheme();
 	// shows showText icon if secureTextEntry prop is present
 	const [showText, setShowText] = useState(!secureTextEntry);
 
-	const showError = useValue(false);
+	const showError = useValue(!isEmpty(error));
 	const errorHeight = useValue();
 
 	// animation params
 	const height = useValue(0);
 	const paddingBottom = useValue(0);
-
-	const displayErrors = (error) => {
-		switch (error.code) {
-			case "auth/invalid-email":
-				return "Email is empty or incorrectly formatted.";
-			case "auth/user-not-found":
-				return "User not found.  Please try again";
-			case "auth/wrong-password":
-				return "Incorrect password.  Please try again.";
-			case "auth/too-many-requests":
-				return "Too many unsuccessful login attempts. Please try again later.";
-			case "auth/weak-password":
-				return "Password should be at least 6 characters.";
-			default:
-				return;
-		}
-	};
 
 	useCode(
 		() => [
@@ -111,10 +95,10 @@ export default function FormInput({
 
 						// set animation trigger and to value
 						errorHeight.setValue(height);
-						showError.setValue(error ? true : false);
+						showError.setValue(!isEmpty(error) ? true : false);
 					}}
 				>
-					{displayErrors(error)}
+					{!isEmpty(error) ? error : null}
 				</ErrorMessage>
 			</ErrorContainer>
 		</Container>
