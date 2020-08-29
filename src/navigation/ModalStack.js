@@ -1,9 +1,10 @@
 import React from "react";
 import { Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useAuth } from "../context/Auth";
 import { useTheme, IconButton, Button } from "react-native-paper";
 import styled from "styled-components";
+// import context
+import { useAuth } from "../context/Auth";
 // import components
 import AddRoomScreen from "../screens/AddRoomScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -28,7 +29,7 @@ export default function ModalStack() {
 				},
 				headerTintColor: theme.colors.primary,
 				headerTitleStyle: {
-					fontSize: theme.fonts.nav_header_size,
+					fontSize: theme.sizes.nav_header,
 				},
 			}}
 		>
@@ -45,11 +46,19 @@ export default function ModalStack() {
 					headerRight: () => (
 						<Close
 							icon={theme.icons.close}
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.primary}
 							onPress={() => navigation.goBack()}
 						/>
 					),
+					// headerTransparent: true,
+					cardStyle: {
+						top: theme.sizes.statusbar_height,
+						height:
+							theme.sizes.window_height -
+							theme.sizes.statusbar_height * 4,
+						borderRadius: 30,
+					},
 				})}
 			/>
 			<Stack.Screen
@@ -59,20 +68,27 @@ export default function ModalStack() {
 					headerLeft: () => (
 						<Close
 							icon={theme.icons.close}
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.primary}
 							onPress={() => navigation.goBack()}
 						/>
 					),
 					headerRight: () => (
 						<Save
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.primary}
 							onPress={() => navigation.goBack()}
 						>
 							Save
 						</Save>
 					),
+					// headerTransparent: true,
+					cardOverlayEnabled: true,
+					cardStyle: {
+						top: theme.sizes.statusbar_height,
+						// height: theme.sizes.window_height - theme.sizes.statusbar_height,
+						borderRadius: 30,
+					},
 				})}
 			/>
 		</Stack.Navigator>

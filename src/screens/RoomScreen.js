@@ -83,7 +83,7 @@ export default function RoomScreen({ route }) {
 			<SendContainer>
 				<IconButton
 					icon={theme.icons.send}
-					size={theme.fonts.icon_lg}
+					size={theme.sizes.icon_lg}
 					color={theme.colors.primary}
 				/>
 			</SendContainer>
@@ -93,7 +93,7 @@ export default function RoomScreen({ route }) {
 		<FlexContainer>
 			<IconButton
 				icon={theme.icons.scroll_down}
-				size={theme.fonts.icon_lg}
+				size={theme.sizes.icon_lg}
 				color={theme.colors.primary}
 			/>
 		</FlexContainer>

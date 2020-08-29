@@ -70,8 +70,8 @@ export default function SignupScreen({ navigation }) {
 					onPress={handleRegister}
 				/>
 				<NavButton
-					icon={theme.icons.back}
-					size={theme.fonts.icon_lg}
+					icon={theme.icons.back_heavy}
+					size={theme.sizes.icon_lg}
 					color={theme.colors.primary}
 					onPress={() => {
 						navigation.navigate("Login");

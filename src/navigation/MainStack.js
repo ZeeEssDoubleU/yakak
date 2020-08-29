@@ -30,7 +30,7 @@ export default function MainStack() {
 				},
 				headerTintColor: theme.colors.text_light,
 				headerTitleStyle: {
-					fontSize: theme.fonts.nav_header_size,
+					fontSize: theme.sizes.nav_header,
 				},
 			}}
 		>
@@ -41,7 +41,7 @@ export default function MainStack() {
 					headerRight: () => (
 						<AddRoom
 							icon={theme.icons.add}
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.text_light}
 							onPress={() => navigation.navigate("AddRoom")}
 						/>
@@ -49,7 +49,7 @@ export default function MainStack() {
 					headerLeft: () => (
 						<Logout
 							icon={theme.icons.profile}
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.text_light}
 							onPress={() => navigation.navigate("Profile")}
 						/>
@@ -64,7 +64,7 @@ export default function MainStack() {
 					headerLeft: () => (
 						<GoBack
 							icon={theme.icons.back}
-							size={theme.fonts.icon_md}
+							size={theme.sizes.icon_md}
 							color={theme.colors.text_light}
 							onPress={() => navigation.goBack()}
 						/>

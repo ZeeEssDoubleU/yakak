@@ -3,8 +3,6 @@
 // import ImagePicker from "expo-image-picker";
 // import Constants from "expo-constants";
 // import Permissions from "expo-permissions";
-// // get dimensions
-// const { width, height } = Dimensions.get("window");
 
 // export default function ImagePicker() {
 // 	useEffect(() => {

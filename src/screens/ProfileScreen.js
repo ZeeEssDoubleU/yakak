@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { View, Text, Dimensions, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Avatar, useTheme, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
@@ -8,8 +8,6 @@ import FormButton from "../components/Form/FormButton";
 import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 // import context
 import { useAuth } from "../context/Auth";
-// get dimensions
-const { width, height } = Dimensions.get("window");
 
 //***********
 // component
@@ -89,7 +87,7 @@ export default function ProfileScreen() {
 						title="Logout"
 						mode="contained"
 						color={theme.colors.danger}
-						onPress={() => logout()}
+						onPress={logoutActions}
 					/>
 				</View>
 			</ScrollView>
@@ -102,35 +100,33 @@ export default function ProfileScreen() {
 //***********
 
 import { theme } from "../styles/theme";
-const AVATAR_SIZE = width / 2.5;
-const BANNER_SIZE = height / 4.5;
-const PADDING = 16;
 const styles = StyleSheet.create({
 	avatar: {
-		width: AVATAR_SIZE - 6 * 2,
-		height: AVATAR_SIZE - 6 * 2,
-		borderRadius: AVATAR_SIZE - 6 * 2,
+		width: theme.sizes.avatar - 6 * 2,
+		height: theme.sizes.avatar - 6 * 2,
+		borderRadius: theme.sizes.avatar - 6 * 2,
 	},
 	avatarWrapper: {
 		alignItems: "center",
 		justifyContent: "center",
-		left: PADDING,
-		width: AVATAR_SIZE,
-		height: AVATAR_SIZE,
-		borderRadius: AVATAR_SIZE - 6 * 2,
+		left: theme.sizes.window_padding,
+		width: theme.sizes.avatar,
+		height: theme.sizes.avatar,
+		borderRadius: theme.sizes.avatar - 6 * 2,
 		backgroundColor: theme.colors.surface_bg,
 	},
 	banner: {
-		height: BANNER_SIZE,
-		width: width,
+		height: theme.sizes.banner,
+		width: theme.sizes.window_width,
 		borderRadius: 0,
 	},
 	container: {
 		flex: 1,
+		height: theme.sizes.window_height - 400,
 	},
 	details: {
-		marginHorizontal: PADDING,
-		marginVertical: 1 * PADDING,
+		marginHorizontal: theme.sizes.window_padding,
+		marginVertical: theme.sizes.window_padding,
 		borderRadius: 4,
 		fontSize: 14,
 	},
@@ -146,7 +142,7 @@ const styles = StyleSheet.create({
 	},
 	translateWrapper: {
 		flex: 1,
-		top: -AVATAR_SIZE / 2,
-		width: width,
+		top: -theme.sizes.avatar / 2,
+		width: theme.sizes.window_width,
 	},
 });

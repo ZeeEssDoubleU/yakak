@@ -1,10 +1,8 @@
 import React from "react";
-import { Dimensions, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
-// get dimensions
-const { width, height } = Dimensions.get("window");
 
 //***********
 // component
@@ -26,19 +24,20 @@ export const FormButton_grad = ({ title, ...props }) => {
 // styles
 //***********
 
+import { theme } from "../../styles/theme";
 const StyledButton = styled(Button)`
 	align-items: center;
 	justify-content: center;
 	margin-top: 10px;
-	width: ${width / 2}px;
-	height: ${height / 15}px;
+	width: ${theme.sizes.window_width / 2}px;
+	height: ${theme.sizes.window_height / 15}px;
 `;
 const StyledButton_grad = styled(LinearGradient)`
 	align-items: center;
 	justify-content: center;
 	margin-top: 10px;
-	width: ${width / 2}px;
-	height: ${height / 15}px;
+	width: ${theme.sizes.window_width / 2}px;
+	height: ${theme.sizes.window_height / 15}px;
 	border-radius: 4px;
 	background-color: ${(props) =>
 		props.bgColor ? props.bgColor : "transparent"};

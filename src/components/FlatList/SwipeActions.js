@@ -84,7 +84,7 @@ export default function SwipeActions({
 				>
 					<RemoveIcon
 						icon={theme.icons.remove}
-						size={28}
+						size={theme.sizes.icon_md}
 						color={theme.colors.text_light}
 					/>
 				</IconContainer>
