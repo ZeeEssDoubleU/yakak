@@ -28,7 +28,7 @@ export default function SwipeActions({
 	item,
 	shouldRemove,
 }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const { user } = useAuth();
 	// swipe actions layout/animation props
 	const size = x;
@@ -82,7 +82,11 @@ export default function SwipeActions({
 						opacity: iconOpacity,
 					}}
 				>
-					<RemoveIcon icon="minus" size={28} color={colors.text_light} />
+					<RemoveIcon
+						icon={theme.icons.remove}
+						size={28}
+						color={theme.colors.text_light}
+					/>
 				</IconContainer>
 				<TextContainer
 					style={{

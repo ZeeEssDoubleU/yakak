@@ -9,7 +9,7 @@ import styled from "styled-components/native";
 //***********
 
 export default function Item({ item, navigation }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	// right side of list item (ie time and arrow icon)
 	const rightComponent = () => {
 		// format time
@@ -20,7 +20,10 @@ export default function Item({ item, navigation }) {
 		return (
 			<RightContainer>
 				<Time>{formatTime}</Time>
-				<StyledIcon icon="chevron-right" color={colors.text_medium} />
+				<StyledIcon
+					icon={theme.icons.right}
+					color={theme.colors.text_medium}
+				/>
 			</RightContainer>
 		);
 	};

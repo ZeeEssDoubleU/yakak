@@ -12,7 +12,7 @@ import { useAuth } from "../context/Auth";
 //***********
 
 export default function RoomScreen({ route }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const { thread } = route.params;
 	const { user } = useAuth();
 	const currentUser = user.toJSON();
@@ -81,22 +81,26 @@ export default function RoomScreen({ route }) {
 	const sendComponent = (props) => (
 		<Send {...props}>
 			<SendContainer>
-				<IconButton icon="send" size={32} color={colors.primary} />
+				<IconButton
+					icon={theme.icons.send}
+					size={theme.fonts.icon_lg}
+					color={theme.colors.primary}
+				/>
 			</SendContainer>
 		</Send>
 	);
 	const scrollComponent = (props) => (
 		<FlexContainer>
 			<IconButton
-				icon="chevron-double-down"
-				size={36}
-				color={colors.primary}
+				icon={theme.icons.scroll_down}
+				size={theme.fonts.icon_lg}
+				color={theme.colors.primary}
 			/>
 		</FlexContainer>
 	);
 	const loadingComponent = (props) => (
 		<FlexContainer>
-			<ActivityIndicator size="large" color={colors.primary} />
+			<ActivityIndicator size="large" color={theme.colors.primary} />
 		</FlexContainer>
 	);
 	const systemMessageComponent = (props) => <SystemMessage {...props} />;

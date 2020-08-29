@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import FormInput from "../components/Form/FormInput";
 import FormButton from "../components/Form/FormButton";
 import AuthInput from "../components/Auth/AuthInput";
-import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
+import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 import Header from "../components/Header";
 import ScreenTransition from "../components/ScreenTransition";
 // import context
@@ -17,7 +17,7 @@ import { useAuth } from "../context/Auth";
 //***********
 
 export default function SignupScreen({ navigation }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -70,9 +70,9 @@ export default function SignupScreen({ navigation }) {
 					onPress={handleRegister}
 				/>
 				<NavButton
-					icon="keyboard-backspace"
-					size={30}
-					color={colors.primary}
+					icon={theme.icons.back}
+					size={theme.fonts.icon_lg}
+					color={theme.colors.primary}
 					onPress={() => {
 						navigation.navigate("Login");
 					}}
@@ -86,7 +86,7 @@ export default function SignupScreen({ navigation }) {
 // styles
 //***********
 
-const Container = styled(KeyboardFlexView)``;
+const Container = styled(KeyboardAvoidingView)``;
 const NavButton = styled(IconButton)`
 	margin-top: 10px;
 	font-size: 18px;

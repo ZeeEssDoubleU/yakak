@@ -8,10 +8,13 @@ import DismissKeyboard from "./DismissKeyboard";
 // component
 //***********
 
-export default function KeyboardFlexView({ children }) {
+export default function KeyboardAvoid({ children, ...props }) {
 	return (
 		<DismissKeyboard>
-			<Container behavior={Platform.OS == "ios" ? "padding" : "height"}>
+			<Container
+				behavior={Platform.OS == "ios" ? "padding" : "height"}
+				{...props}
+			>
 				{children}
 			</Container>
 		</DismissKeyboard>
@@ -23,7 +26,7 @@ export default function KeyboardFlexView({ children }) {
 
 const Container = styled(KeyboardAvoidingView)`
 	background-color: ${(props) => props.theme.colors.surface_bg};
-	flex: 1;
+	flex: ${(props) => (props.noFlex ? null : 1)};
 	justify-content: center;
 	align-items: center;
 `;

@@ -7,7 +7,7 @@ import FormButton from "../components/Form/FormButton";
 import AuthInput from "../components/Auth/AuthInput";
 import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
-import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
+import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 import ScreenTransition from "../components/ScreenTransition";
 // import context
 import { AuthContext } from "../context/Auth";
@@ -72,7 +72,7 @@ export default function LoginScreen({ navigation }) {
 // styles
 //***********
 
-const Container = styled(KeyboardFlexView)``;
+const Container = styled(KeyboardAvoidingView)``;
 const LoginButton = styled(FormButton)`
 	font-size: 22px;
 `;

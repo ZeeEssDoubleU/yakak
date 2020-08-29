@@ -39,7 +39,7 @@ export default function FormInput({
 	error = false,
 	...props
 }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	// shows showText icon if secureTextEntry prop is present
 	const [showText, setShowText] = useState(!secureTextEntry);
 
@@ -74,10 +74,12 @@ export default function FormInput({
 			<Wrapper>
 				{secureTextEntry && (
 					<ShowText
-						icon={showText ? "eye-off-outline" : "eye-outline"}
-						color={colors.disabled}
+						icon={showText ? theme.icons.eye_shut : theme.icons.eye_open}
+						color={
+							showText ? theme.colors.primary : theme.colors.disabled
+						}
 						onPress={() => setShowText(!showText)}
-						size={22}
+						size={theme.fonts.icon_md}
 					/>
 				)}
 				<Input label={labelName} secureTextEntry={!showText} {...props} />

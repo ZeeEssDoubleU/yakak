@@ -11,14 +11,14 @@ import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
 // import context
 import { useAuth } from "../context/Auth";
-import KeyboardFlexView from "../components/Keyboard/KeyboardFlexView";
+import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 
 //***********
 // component
 //***********
 
 export default function AddRoomScreen({ navigation }) {
-	const { colors } = useTheme();
+	const theme = useTheme();
 	const [roomName, setRoomName] = useState("");
 	const { user } = useAuth();
 
@@ -58,15 +58,7 @@ export default function AddRoomScreen({ navigation }) {
 	}
 
 	return (
-		<Container>
-			<CloseButton>
-				<IconButton
-					icon="close-circle-outline"
-					size={32}
-					color={colors.primary}
-					onPress={() => navigation.goBack()}
-				/>
-			</CloseButton>
+		<KeyboardAvoidingView>
 			<Main>
 				<Header>Create a new chat room</Header>
 				<FormInput
@@ -83,22 +75,15 @@ export default function AddRoomScreen({ navigation }) {
 					labelStyle={styles.buttonLabel}
 				/>
 			</Main>
-		</Container>
+		</KeyboardAvoidingView>
 	);
 }
 
 //***********
 // component
 //***********
-const Container = styled(KeyboardFlexView)``;
-const CloseButton = styled(View)`
-	position: absolute;
-	top: 30px;
-	right: 0;
-	z-index: 1;
-`;
+
 const Main = styled(View)`
-	flex: 1;
 	justify-content: center;
 	align-items: center;
 `;
