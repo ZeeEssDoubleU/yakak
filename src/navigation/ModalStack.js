@@ -1,10 +1,11 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useTheme, IconButton, Button } from "react-native-paper";
 import styled from "styled-components";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
+import { useUserDetails } from "../context/userDetails";
 // import components
 import AddRoomScreen from "../screens/AddRoomScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -18,6 +19,7 @@ import MainStack from "./MainStack";
 
 export default function ModalStack() {
 	const { logout } = useAuth();
+	const { saveUserDetails } = useUserDetails();
 	const theme = useTheme();
 
 	return (
@@ -42,6 +44,7 @@ export default function ModalStack() {
 				name="AddRoom"
 				component={AddRoomScreen}
 				options={({ navigation }) => ({
+					// headerShown: false,
 					headerLeft: () => null,
 					headerRight: () => (
 						<Close
@@ -51,14 +54,6 @@ export default function ModalStack() {
 							onPress={() => navigation.goBack()}
 						/>
 					),
-					// headerTransparent: true,
-					cardStyle: {
-						top: theme.sizes.statusbar_height,
-						height:
-							theme.sizes.window_height -
-							theme.sizes.statusbar_height * 4,
-						borderRadius: 30,
-					},
 				})}
 			/>
 			<Stack.Screen
@@ -77,18 +72,14 @@ export default function ModalStack() {
 						<Save
 							size={theme.sizes.icon_md}
 							color={theme.colors.primary}
-							onPress={() => navigation.goBack()}
+							onPress={() => {
+								saveUserDetails();
+								navigation.goBack();
+							}}
 						>
 							Save
 						</Save>
 					),
-					// headerTransparent: true,
-					cardOverlayEnabled: true,
-					cardStyle: {
-						top: theme.sizes.statusbar_height,
-						// height: theme.sizes.window_height - theme.sizes.statusbar_height,
-						borderRadius: 30,
-					},
 				})}
 			/>
 		</Stack.Navigator>
@@ -99,5 +90,17 @@ export default function ModalStack() {
 // styles
 //***********
 
+import { theme } from "../styles/theme";
+
+const Card = styled(View)`
+	top: ${theme.sizes.statusbar_height}px;
+	border-radius: 30;
+`;
 const Close = styled(IconButton)``;
 const Save = styled(Button)``;
+const styles = StyleSheet.create({
+	card: {
+		top: theme.sizes.statusbar_height,
+		borderRadius: 30,
+	},
+});

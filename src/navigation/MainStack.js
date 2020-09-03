@@ -8,7 +8,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import RoomScreen from "../screens/RoomScreen";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
 // create nav stacks
 const Stack = createStackNavigator();
 

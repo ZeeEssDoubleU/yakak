@@ -10,7 +10,7 @@ import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 import Header from "../components/Header";
 import ScreenTransition from "../components/ScreenTransition";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
 
 //***********
 // component

@@ -115,7 +115,11 @@ export default function SwipeToDelete({ onRemove, item, children }) {
 					{...{ shouldRemove }}
 				/>
 			</Underlay>
-			<PanGestureHandler {...gestureHandler} activeOffsetX={[-8, 8]}>
+			<PanGestureHandler
+				{...gestureHandler}
+				activeOffsetX={[-5, 5]}
+				failOffsetY={[-5, 5]}
+			>
 				<Overlay style={{ transform: [{ translateX }] }}>
 					{children}
 				</Overlay>

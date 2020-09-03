@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Avatar, useTheme, TextInput } from "react-native-paper";
+import { Avatar as MuiAvatar, useTheme, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
+import { useHeaderHeight } from "@react-navigation/stack";
 // import components
 import FormButton from "../components/Form/FormButton";
 import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
+import ImagePicker from "../components/ImagePicker";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
+import { useUserDetails } from "../context/userDetails";
 
 //***********
 // component
@@ -18,17 +21,11 @@ import { useAuth } from "../context/Auth";
 // integrate into avatar
 
 export default function ProfileScreen() {
+	const HEADER_HEIGHT = useHeaderHeight();
 	const theme = useTheme();
-	const [userDetails, setUserDetails] = useState({
-		display_name: "Bob Johnson",
-		about:
-			"I am the fastest man alive!  I'm so fast, that I can alter the rotation of the earth.",
-	});
-
 	const { user, logout } = useAuth();
-	// console.log("user:", user); // ? debug
-
 	const { showActionSheetWithOptions } = useActionSheet();
+	const userDetails = useUserDetails();
 
 	const logoutActions = () => {
 		showActionSheetWithOptions(
@@ -47,49 +44,49 @@ export default function ProfileScreen() {
 
 	return (
 		<KeyboardAvoidingView>
-			<ScrollView
-				contentContainerStyle={{ flexGrow: 1 }}
-				style={styles.scrollView}
-				centerContent
-			>
-				<Avatar.Image style={styles.banner} />
-				<View style={styles.detailsWrapper}>
-					<View style={styles.translateWrapper}>
-						<View style={styles.avatarWrapper}>
-							<Avatar.Image
-								color={theme.colors.danger}
-								style={styles.avatar}
-							/>
-						</View>
-						<TextInput
-							label="Display name (optional)"
-							value={userDetails.display_name}
-							mode="outlined"
-							style={styles.details}
-						/>
-						<TextInput
-							label="Email"
-							value={user.email}
-							mode="outlined"
-							disabled
-							style={styles.details}
-						/>
-						<TextInput
-							label="About (optional)"
-							value={userDetails.about}
-							mode="outlined"
-							multiline
-							style={styles.details}
-						/>
-					</View>
-					<FormButton
-						style={styles.logout}
-						title="Logout"
-						mode="contained"
-						color={theme.colors.danger}
-						onPress={logoutActions}
+			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+				<Container {...{ HEADER_HEIGHT }}>
+					<Banner
+						width={theme.sizes.window_width}
+						height={theme.sizes.banner}
+						borderRadius={0}
+						parentImage={userDetails.banner}
+						setParentImage={userDetails.setBanner}
+						imageType="banner"
 					/>
-				</View>
+					<DetailsWrapper>
+						<TranslateWrapper>
+							<AvatarWrapper>
+								<Avatar
+									width={theme.sizes.avatar}
+									height={theme.sizes.avatar}
+									borderRadius={theme.sizes.avatar_border_radius}
+									parentImage={userDetails.avatar}
+									setParentImage={userDetails.setAvatar}
+									imageType="avatar"
+								/>
+							</AvatarWrapper>
+							<Details
+								label="Display name (optional)"
+								value={userDetails.displayName}
+								onChangeText={userDetails.setDisplayName}
+							/>
+							<Details label="Email" value={user.email} disabled />
+							<Details
+								label="About (optional)"
+								value={userDetails.about}
+								onChangeText={userDetails.setAbout}
+								multiline
+							/>
+						</TranslateWrapper>
+						<Logout
+							title="Logout"
+							mode="contained"
+							color={theme.colors.danger}
+							onPress={logoutActions}
+						/>
+					</DetailsWrapper>
+				</Container>
 			</ScrollView>
 		</KeyboardAvoidingView>
 	);
@@ -100,49 +97,39 @@ export default function ProfileScreen() {
 //***********
 
 import { theme } from "../styles/theme";
-const styles = StyleSheet.create({
-	avatar: {
-		width: theme.sizes.avatar - 6 * 2,
-		height: theme.sizes.avatar - 6 * 2,
-		borderRadius: theme.sizes.avatar - 6 * 2,
-	},
-	avatarWrapper: {
-		alignItems: "center",
-		justifyContent: "center",
-		left: theme.sizes.window_padding,
-		width: theme.sizes.avatar,
-		height: theme.sizes.avatar,
-		borderRadius: theme.sizes.avatar - 6 * 2,
-		backgroundColor: theme.colors.surface_bg,
-	},
-	banner: {
-		height: theme.sizes.banner,
-		width: theme.sizes.window_width,
-		borderRadius: 0,
-	},
-	container: {
-		flex: 1,
-		height: theme.sizes.window_height - 400,
-	},
-	details: {
-		marginHorizontal: theme.sizes.window_padding,
-		marginVertical: theme.sizes.window_padding,
-		borderRadius: 4,
-		fontSize: 14,
-	},
-	detailsWrapper: {
-		flex: 1,
-	},
-	logout: {
-		alignSelf: "center",
-		bottom: 36,
-	},
-	scrollView: {
-		flex: 1,
-	},
-	translateWrapper: {
-		flex: 1,
-		top: -theme.sizes.avatar / 2,
-		width: theme.sizes.window_width,
-	},
-});
+
+const Avatar = styled(ImagePicker)``;
+const AvatarWrapper = styled(View)`
+	align-items: center;
+	justify-content: center;
+	left: ${theme.sizes.window_padding}px;
+	/* these attributes are based of avatars attributes */
+	width: ${theme.sizes.avatar + 6 * 2}px;
+	height: ${theme.sizes.avatar + 6 * 2}px;
+	border-radius: ${theme.sizes.avatar_border_radius + 6}px;
+	background-color: ${theme.colors.surface_bg}px;
+`;
+const Banner = styled(ImagePicker)``;
+const Container = styled(View)`
+	height: ${(props) => theme.sizes.window_height - props.HEADER_HEIGHT}px;
+	/* background-color: red; // ? debug */
+`;
+const DetailsWrapper = styled(View)`
+	flex: 1;
+`;
+const Details = styled(TextInput)`
+	border-radius: 4px;
+	margin: ${theme.sizes.window_padding}px ${theme.sizes.window_padding}px;
+	font-size: 14px;
+	background-color: ${theme.colors.surface_bg};
+`;
+const Logout = styled(FormButton)`
+	position: absolute;
+	align-self: center;
+	bottom: 36px;
+`;
+const TranslateWrapper = styled(View)`
+	flex: 1;
+	top: ${-theme.sizes.avatar / 2}px;
+	width: ${theme.sizes.window_width}px;
+`;

@@ -1,44 +1,94 @@
-// import React from "react";
-// import { Button, Image, View } from "react-native";
-// import ImagePicker from "expo-image-picker";
-// import Constants from "expo-constants";
-// import Permissions from "expo-permissions";
+import React, { useEffect, useState } from "react";
+import { Button, Image, View, TouchableWithoutFeedback } from "react-native";
+import * as ExpoImagePicker from "expo-image-picker";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
+import styled from "styled-components/native";
+import { Avatar as MuiAvatar } from "react-native-paper";
+import isEmpty from "lodash/fp/isEmpty";
+// import context
+import { useAuth } from "../context/auth";
+import { useUserDetails } from "../context/userDetails";
 
-// export default function ImagePicker() {
-// 	useEffect(() => {
-// 		getPermissionAsync();
-// 	}, []);
+//***********
+// component
+//***********
 
-// 	const getPermissionAsync = async () => {
-// 		if (Constants.platform.ios) {
-// 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-// 			if (status !== "granted") {
-// 				alert("Sorry, we need camera roll permissions to make this work!");
-// 			}
-// 		}
-// 	};
+export default function ImagePicker({ children, ...props }) {
+	const { uploadImage } = useUserDetails();
+	const { user } = useAuth();
+	const [image, setImage] = useState();
 
-// 	const pickImage = async () => {
-// 		try {
-// 			let result = await ImagePicker.launchImageLibraryAsync({
-// 				mediaTypes: ImagePicker.MediaTypeOptions.images,
-// 				allowsEditing: true,
-// 				aspect: [4, 3],
-// 				quality: 1,
-// 			});
-// 			if (!result.cancelled) {
-// 				this.setState({ image: result.uri });
-// 			}
+	// get phone permissions on page load
+	useEffect(() => {
+		// console.log("image:", image); // ? debug
+		getPhonePermissions();
+	}, []);
 
-// 			console.log(result);
-// 		} catch (E) {
-// 			console.log(E);
-// 		}
-// 	};
+	const getPhonePermissions = async () => {
+		if (Constants.platform.ios) {
+			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+			if (status !== "granted") {
+				alert("Please allow permssion to access your photos/camera.");
+			}
+		}
+	};
 
-// 	return (
-// 		<View>
-// 			<Text></Text>
-// 		</View>
-// 	);
-// }
+	const pickImage = async () => {
+		try {
+			let result = await ExpoImagePicker.launchImageLibraryAsync({
+				mediaTypes: ExpoImagePicker.MediaTypeOptions.images,
+				allowsEditing: true,
+				aspect: [props.width, props.height],
+				quality: 1,
+			});
+
+			if (!result.cancelled) {
+				// upload image to firebase storage
+				const downloadURL = await uploadImage(
+					user,
+					result.uri,
+					props.imageType,
+				);
+
+				// if parentImage exists, set parentImage
+				// if not, set this ImagePicker image
+				props.setParentImage
+					? props.setParentImage(result.uri)
+					: setImage(result.uri);
+			}
+
+			console.log("result:", result); // ? debug
+		} catch (err) {
+			console.log("error:", err);
+		}
+	};
+
+	// choose image source based on provided props
+	const imageSource = () => {
+		if (!isEmpty(props.parentImage)) {
+			return { uri: props.parentImage };
+		} else if (!isEmpty(image)) {
+			return { uri: image };
+		} else {
+			return null;
+		}
+	};
+
+	return (
+		<TouchableWithoutFeedback onPress={pickImage}>
+			<StyledImage source={imageSource()} {...props} />
+		</TouchableWithoutFeedback>
+	);
+}
+
+//***********
+// styles
+//***********
+
+const StyledImage = styled.Image`
+	height: ${(props) => props.height}px;
+	width: ${(props) => props.width}px;
+	border-radius: ${(props) => props.borderRadius}px;
+	background-color: ${(props) => props.theme.colors.disabled};
+`;

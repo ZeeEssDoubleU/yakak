@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "../navigation/AuthStack";
 import MainStack from "../navigation/ModalStack"; // MainStack nested within ModalStack
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
 
 export default function Routes() {
 	const { user } = useAuth();

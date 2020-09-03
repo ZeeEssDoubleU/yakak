@@ -31,6 +31,7 @@ const StyledButton = styled(Button)`
 	margin-top: 10px;
 	width: ${theme.sizes.window_width / 2}px;
 	height: ${theme.sizes.window_height / 15}px;
+	border-radius: ${theme.sizes.window_height / 15}px;
 `;
 const StyledButton_grad = styled(LinearGradient)`
 	align-items: center;

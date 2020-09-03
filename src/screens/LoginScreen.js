@@ -10,7 +10,7 @@ import Header from "../components/Header";
 import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
 import ScreenTransition from "../components/ScreenTransition";
 // import context
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/auth";
 
 //***********
 // component

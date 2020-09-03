@@ -26,7 +26,7 @@ export default function KeyboardAvoid({ children, ...props }) {
 
 const Container = styled(KeyboardAvoidingView)`
 	background-color: ${(props) => props.theme.colors.surface_bg};
-	flex: ${(props) => (props.noFlex ? null : 1)};
-	justify-content: center;
+	flex: ${(props) => (props.noFlex ? 0 : 1)};
+	justify-content: ${(props) => props.justifyContent || "center"};
 	align-items: center;
 `;

@@ -10,7 +10,7 @@ import Loading from "../components/Loading";
 import SwipeToDelete from "../components/FlatList/SwipeToDelete";
 import Item from "../components/FlatList/Item";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
 
 //***********
 // compoenent

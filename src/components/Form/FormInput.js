@@ -78,6 +78,7 @@ export default function FormInput({
 						}
 						onPress={() => setShowText(!showText)}
 						size={theme.sizes.icon_md}
+						dense={true}
 					/>
 				)}
 				<Input label={labelName} secureTextEntry={!showText} {...props} />
@@ -126,7 +127,6 @@ const ErrorMessage = styled(HelperText)`
 	color: ${(props) => props.theme.colors.danger};
 `;
 const Input = styled(TextInput)`
-	margin: 10px 0;
 	width: ${theme.sizes.window_width / 1.5}px;
 	height: ${theme.sizes.window_height / 15}px;
 `;
@@ -136,5 +136,6 @@ const ShowText = styled(IconButton)`
 	z-index: 10;
 `;
 const Wrapper = styled(View)`
+	margin: 10px 0;
 	justify-content: center;
 `;

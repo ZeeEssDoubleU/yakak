@@ -1,11 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
+import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
+import {
+	GiftedChat,
+	Avatar,
+	GiftedAvatar,
+	Bubble,
+	Send,
+} from "react-native-gifted-chat";
 import { IconButton, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { firebase_firestore } from "../config/firebase";
 // import context
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/auth";
+import { useUserDetails } from "../context/userDetails";
 
 //***********
 // component
@@ -15,6 +22,7 @@ export default function RoomScreen({ route }) {
 	const theme = useTheme();
 	const { thread } = route.params;
 	const { user } = useAuth();
+	const { avatar } = useUserDetails();
 	const currentUser = user.toJSON();
 	const [messages, setMessages] = useState();
 
@@ -67,6 +75,7 @@ export default function RoomScreen({ route }) {
 	}
 
 	// GiftedChat components
+
 	const bubbleComponent = (props) => (
 		<Bubble
 			{...props}
@@ -77,6 +86,11 @@ export default function RoomScreen({ route }) {
 				right: { color: styles.bubble.color },
 			}}
 		/>
+	);
+	const loadingComponent = (props) => (
+		<FlexContainer>
+			<ActivityIndicator size="large" color={theme.colors.primary} />
+		</FlexContainer>
 	);
 	const sendComponent = (props) => (
 		<Send {...props}>
@@ -98,25 +112,25 @@ export default function RoomScreen({ route }) {
 			/>
 		</FlexContainer>
 	);
-	const loadingComponent = (props) => (
-		<FlexContainer>
-			<ActivityIndicator size="large" color={theme.colors.primary} />
-		</FlexContainer>
-	);
 	const systemMessageComponent = (props) => <SystemMessage {...props} />;
 
 	return (
 		<GiftedChat
+			alwaysShowSend
 			messages={messages}
 			onSend={(newMessage) => handleSend(newMessage)}
-			user={{ _id: currentUser.uid, name: currentUser.email }}
-			renderLoading={loadingComponent}
+			// onPressAvatar // TODO: link to users profile page
 			renderBubble={bubbleComponent}
+			renderLoading={loadingComponent}
 			renderSend={sendComponent}
 			renderSystemmessage={systemMessageComponent}
-			alwaysShowSend
 			scrollToBottom
 			scrollToBottomComponent={scrollComponent}
+			user={{
+				_id: currentUser.uid,
+				name: currentUser.email,
+				avatar,
+			}}
 		/>
 	);
 }
@@ -130,15 +144,19 @@ const Container = styled(View)`
 	justify-content: center;
 	align-items: center;
 `;
+const FlexContainer = styled(Container)`
+	flex: 1;
+`;
 const SendContainer = styled(Container)`
 	height: 100%;
 `;
 const styles = StyleSheet.create({
+	avatar: {
+		backgroundColor: theme.colors.primary,
+		color: theme.colors.text_light,
+	},
 	bubble: {
 		backgroundColor: theme.colors.primary,
 		color: theme.colors.text_light,
 	},
 });
-const FlexContainer = styled(Container)`
-	flex: 1;
-`;

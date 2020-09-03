@@ -1,23 +1,24 @@
 import React, { useState, useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useHeaderHeight } from "@react-navigation/stack";
 import styled from "styled-components/native";
-import { IconButton, Title, useTheme } from "react-native-paper";
+import { Title, useTheme } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
 import { format } from "date-fns/fp";
 // import components
 import FormButton from "../components/Form/FormButton";
 import FormInput from "../components/Form/FormInput";
-import DismissKeyboard from "../components/Keyboard/DismissKeyboard";
 import Header from "../components/Header";
-// import context
-import { useAuth } from "../context/Auth";
 import KeyboardAvoidingView from "../components/Keyboard/KeyboardAvoidingView";
+// import context
+import { useAuth } from "../context/auth";
 
 //***********
 // component
 //***********
 
 export default function AddRoomScreen({ navigation }) {
+	const HEADER_HEIGHT = useHeaderHeight();
 	const theme = useTheme();
 	const [roomName, setRoomName] = useState("");
 	const { user } = useAuth();
@@ -26,7 +27,7 @@ export default function AddRoomScreen({ navigation }) {
 		if (roomName.length > 0) {
 			// format time
 			const createdAt = Date.now();
-			const local = new Date(Date.now());
+			const local = new Date(createdAt);
 			const formatTime = format("h:mm a")(local);
 
 			const currentUser = { _id: user.uid, email: user.email };
@@ -59,7 +60,7 @@ export default function AddRoomScreen({ navigation }) {
 
 	return (
 		<KeyboardAvoidingView>
-			<Main>
+			<Container {...{ HEADER_HEIGHT }}>
 				<Header>Create a new chat room</Header>
 				<FormInput
 					labelName="Room name"
@@ -72,9 +73,9 @@ export default function AddRoomScreen({ navigation }) {
 					mode="contained"
 					onPress={createRoom}
 					disabled={roomName.length === 0}
-					labelStyle={styles.buttonLabel}
+					// style={{ position: "absolute", bottom: 36 }} // ? debug
 				/>
-			</Main>
+			</Container>
 		</KeyboardAvoidingView>
 	);
 }
@@ -83,12 +84,12 @@ export default function AddRoomScreen({ navigation }) {
 // component
 //***********
 
-const Main = styled(View)`
+import { theme } from "../styles/theme";
+
+const Container = styled(View)`
 	justify-content: center;
 	align-items: center;
+	height: ${(props) => theme.sizes.window_height - props.HEADER_HEIGHT}px;
+	width: ${theme.sizes.window_width}px;
+	/* background-color: red; // ? debug */
 `;
-const styles = StyleSheet.create({
-	buttonLabel: {
-		fontSize: 18,
-	},
-});

@@ -51,6 +51,7 @@ export const theme = {
 		send: "sc-telegram",
 		eye_open: "eye",
 		eye_shut: "eye",
+		add_photo: "camera",
 	},
 	sizes: {
 		window_height: HEIGHT,
@@ -61,8 +62,10 @@ export const theme = {
 		icon_lg: 40,
 		nav_header: 20,
 		nav_font: 20,
-		avatar: WIDTH / 2.5,
+		avatar: WIDTH / 2.75,
+		avatar_border_radius: 12,
 		banner: HEIGHT / 4.5,
+		bottom_button_padding: 36,
 	},
 	animation: {
 		...DefaultTheme.animation,

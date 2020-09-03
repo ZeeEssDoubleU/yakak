@@ -15,7 +15,7 @@ import Animated, {
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 // import context
-import { useAuth } from "../../context/Auth";
+import { useAuth } from "../../context/auth";
 
 //***********
 // component

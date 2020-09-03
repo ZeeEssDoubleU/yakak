@@ -2,7 +2,8 @@ import React from "react";
 // import providers
 import { ThemeProvider } from "./src/styles/theme";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { AuthProvider } from "./src/context/Auth";
+import { AuthProvider } from "./src/context/auth";
+import { UserDetailsProvider } from "./src/context/userDetails";
 // import components
 import Routes from "./src/navigation/Routes";
 // import styles
@@ -13,7 +14,9 @@ export default function App() {
 		<ThemeProvider>
 			<ActionSheetProvider>
 				<AuthProvider>
-					<Routes />
+					<UserDetailsProvider>
+						<Routes />
+					</UserDetailsProvider>
 				</AuthProvider>
 			</ActionSheetProvider>
 		</ThemeProvider>
