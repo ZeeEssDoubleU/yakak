@@ -58,6 +58,7 @@ export const theme = {
 		window_width: WIDTH,
 		window_padding: 16,
 		statusbar_height: STATUSBAR_HEIGHT,
+		icon_sm: 28,
 		icon_md: 32,
 		icon_lg: 40,
 		nav_header: 20,

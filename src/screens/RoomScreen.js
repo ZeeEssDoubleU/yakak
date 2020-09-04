@@ -117,6 +117,7 @@ export default function RoomScreen({ route }) {
 	return (
 		<GiftedChat
 			alwaysShowSend
+			// showUserAvatar // ? debug
 			messages={messages}
 			onSend={(newMessage) => handleSend(newMessage)}
 			// onPressAvatar // TODO: link to users profile page

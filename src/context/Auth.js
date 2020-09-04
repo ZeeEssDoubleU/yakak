@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
 				logout,
 				errors,
 				setErrors,
+				onAuthStateChange,
 			}}
 		>
 			{children}

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { IconButton, useTheme } from "react-native-paper";
+import { Avatar, IconButton, useTheme } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
 import styled from "styled-components/native";
 // import components
@@ -9,6 +9,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import RoomScreen from "../screens/RoomScreen";
 // import context
 import { useAuth } from "../context/auth";
+import { useUserDetails } from "../context/userDetails";
 // create nav stacks
 const Stack = createStackNavigator();
 
@@ -18,7 +19,8 @@ const Stack = createStackNavigator();
 
 export default function MainStack() {
 	const theme = useTheme();
-	const { logout } = useAuth();
+	const { logout, user } = useAuth();
+	const { avatar } = useUserDetails();
 
 	return (
 		<Stack.Navigator
@@ -48,9 +50,18 @@ export default function MainStack() {
 					),
 					headerLeft: () => (
 						<Logout
-							icon={theme.icons.profile}
+							icon={
+								user && avatar
+									? () => (
+											<Avatar.Image
+												source={{ uri: avatar }}
+												size={theme.sizes.icon_sm}
+											/>
+									  )
+									: theme.icons.profile
+							}
 							size={theme.sizes.icon_md}
-							color={theme.colors.text_light}
+							color={user && avatar ? null : theme.colors.text_light}
 							onPress={() => navigation.navigate("Profile")}
 						/>
 					),

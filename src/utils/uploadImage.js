@@ -3,7 +3,7 @@ import firebase, { firebase_storage } from "../config/firebase";
 // function uploads image to firebase_storage
 // taken from docs at url below
 // https://firebase.google.com/docs/storage/web/upload-files
-export const uploadImage = async (user, url, imageType) => {
+export const uploadImage = async (user, url, imageType, setState) => {
 	// capture url string
 	const file = await fetch(url);
 	// convert to blob
@@ -52,6 +52,12 @@ export const uploadImage = async (user, url, imageType) => {
 			// Upload completed successfully, now we can get the download URL
 			const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
 			console.log("File available at:", downloadURL);
+
+			// if setState arg present, call setState
+			if (setState) {
+				setState(downloadURL);
+			}
+
 			return downloadURL;
 		},
 	);

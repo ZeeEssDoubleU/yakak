@@ -1,11 +1,15 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, {
+	createContext,
+	useState,
+	useEffect,
+	useLayoutEffect,
+	useContext,
+} from "react";
 import firebase, {
 	firebase_firestore,
 	firebase_storage,
 } from "../config/firebase";
 import { format } from "date-fns/fp";
-// import components
-import Loading from "../components/Loading";
 // import context
 import { useAuth } from "./auth";
 // import utils
@@ -25,15 +29,13 @@ export const UserDetailsProvider = ({ children }) => {
 	const { user } = useAuth();
 	const [displayName, setDisplayName] = useState("");
 	const [about, setAbout] = useState("");
-	const [avatar, setAvatar] = useState();
-	const [banner, setBanner] = useState();
+	const [avatar, setAvatar] = useState(null);
+	const [banner, setBanner] = useState(null);
 	const [errors, setErrors] = useState({});
-	const [loading, setLoading] = useState(true);
 
 	// ref used in functions below
-	const userDocRef = firebase_firestore
-		.collection("USER_DETAILS")
-		.doc(user.uid);
+	const userDocRef = () =>
+		firebase_firestore.collection("USER_DETAILS").doc(user.uid);
 
 	// get user images from firebase store
 	const getImages = async () => {
@@ -41,40 +43,49 @@ export const UserDetailsProvider = ({ children }) => {
 		const bannerURL = await downloadImage(user, "banner");
 		setAvatar(avatarURL);
 		setBanner(bannerURL);
-		setLoading(false);
 	};
 	// get user details
 	const getUserDetails = async () => {
-		const doc = await userDocRef.get();
+		const doc = await userDocRef().get();
 		const details = doc.data();
 
-		setDisplayName(details.displayName);
-		setAbout(details.about);
+		if (details) {
+			setDisplayName(details.displayName);
+			setAbout(details.about);
+		}
 	};
-	// effect invokes above function
-	useEffect(() => {
+	const getUserData = () => {
 		getImages();
 		getUserDetails();
-	}, []);
-
-	// user details object
-	const userDetails = {
-		_id: user.uid,
-		displayName,
-		about,
 	};
+	const clearUserData = () => {
+		setDisplayName("");
+		setAbout("");
+		setAvatar(null);
+		setBanner(null);
+	};
+	// effect invokes above functions
+	useEffect(() => {
+		user ? getUserData() : clearUserData();
+	}, [user]);
+
+	// TODO: need to adjust save detail function to create avatar and banner fields on USER_DETAIL table
+	// TODO: then have chat message avatars point to USER_DETAILS avatar field
+	// TODO: that way chat message avatars will update when user updates avatar
 	// saves user details
 	const saveUserDetails = async () => {
-		// create or update user document
-		await userDocRef.set(userDetails);
-	};
-	// effect used for debugging
-	useEffect(() => {
-		// console.log("userDetails:", userDetails); // ? debug
-	}, [userDetails]);
+		// user details object
+		const userDetails = {
+			_id: user.uid,
+			displayName,
+			about,
+			// avatar,
+			// banner
+		};
 
-	// show loading icon
-	if (loading) return <Loading />;
+		// create or update user document
+		await userDocRef().set(userDetails);
+	};
 
 	return (
 		<UserDetailContext.Provider
