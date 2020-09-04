@@ -45,12 +45,15 @@ export const UserDetailsProvider = ({ children }) => {
 		const cacheURL_avatar = await cacheImage(downloadURL_avatar);
 		const cacheURL_banner = await cacheImage(downloadURL_banner);
 
+		console.log("download avatar:", downloadURL_avatar);
+		console.log("cache avatar:", cacheURL_avatar);
+
 		if (cacheURL_avatar || downloadURL_avatar) {
-			setAvatar(cacheURL_avatar || downloadURL_avatar);
+			setAvatar(cacheURL_avatar);
 			setAvatar_download(downloadURL_avatar);
 		}
 		if (cacheURL_banner || downloadURL_banner) {
-			setBanner(cacheURL_banner || downloadURL_banner);
+			setBanner(cacheURL_banner);
 			setBanner_download(downloadURL_banner);
 		}
 	};

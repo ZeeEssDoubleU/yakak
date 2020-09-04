@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
-import {
-	GiftedChat,
-	Avatar,
-	GiftedAvatar,
-	Bubble,
-	Send,
-} from "react-native-gifted-chat";
-import { IconButton, useTheme } from "react-native-paper";
-import styled from "styled-components/native";
+import { StyleSheet } from "react-native";
+import { GiftedChat } from "react-native-gifted-chat";
+import { useTheme } from "react-native-paper";
 import { firebase_firestore } from "../config/firebase";
+// import components
+import {
+	bubbleComponent,
+	loadingComponent,
+	sendComponent,
+	scrollComponent,
+	systemMessageComponent,
+} from "../components/GiftedChat/RenderComponents";
 // import context
 import { useAuth } from "../context/auth";
 import { useUserDetails } from "../context/userDetails";
@@ -23,9 +24,19 @@ export default function RoomScreen({ route }) {
 	const { thread } = route.params;
 	const { user } = useAuth();
 	const { avatar } = useUserDetails();
-	const currentUser = user.toJSON();
 	const [messages, setMessages] = useState();
 
+	const docRef = async () => {
+		const userRef = await firebase_firestore
+			.collection("USER_DETAILS")
+			.doc(user.uid);
+		const doc = await userRef.get();
+		const data = doc.data();
+		console.log("DOC REFERENCE:", data);
+		return data;
+	};
+
+	// effect runs when room mounts
 	useEffect(() => {
 		// subscribe to chat room messages on firestore
 		const subscribe = firebase_firestore
@@ -74,50 +85,10 @@ export default function RoomScreen({ route }) {
 		);
 	}
 
-	// GiftedChat components
-
-	const bubbleComponent = (props) => (
-		<Bubble
-			{...props}
-			wrapperStyle={{
-				right: { backgroundColor: styles.bubble.backgroundColor },
-			}}
-			textStyle={{
-				right: { color: styles.bubble.color },
-			}}
-		/>
-	);
-	const loadingComponent = (props) => (
-		<FlexContainer>
-			<ActivityIndicator size="large" color={theme.colors.primary} />
-		</FlexContainer>
-	);
-	const sendComponent = (props) => (
-		<Send {...props}>
-			<SendContainer>
-				<IconButton
-					icon={theme.icons.send}
-					size={theme.sizes.icon_lg}
-					color={theme.colors.primary}
-				/>
-			</SendContainer>
-		</Send>
-	);
-	const scrollComponent = (props) => (
-		<FlexContainer>
-			<IconButton
-				icon={theme.icons.scroll_down}
-				size={theme.sizes.icon_lg}
-				color={theme.colors.primary}
-			/>
-		</FlexContainer>
-	);
-	const systemMessageComponent = (props) => <SystemMessage {...props} />;
-
 	return (
 		<GiftedChat
 			alwaysShowSend
-			// showUserAvatar // ? debug
+			showUserAvatar // ? debug
 			messages={messages}
 			onSend={(newMessage) => handleSend(newMessage)}
 			// onPressAvatar // TODO: link to users profile page
@@ -128,36 +99,10 @@ export default function RoomScreen({ route }) {
 			scrollToBottom
 			scrollToBottomComponent={scrollComponent}
 			user={{
-				_id: currentUser.uid,
-				name: currentUser.email,
-				avatar,
+				_id: user.uid,
+				name: user.email,
+				user: firebase_firestore.collection("USER_DETAILS").doc(user.uid),
 			}}
 		/>
 	);
 }
-
-//***********
-// styles
-//***********
-
-import { theme } from "../styles/theme";
-const Container = styled(View)`
-	justify-content: center;
-	align-items: center;
-`;
-const FlexContainer = styled(Container)`
-	flex: 1;
-`;
-const SendContainer = styled(Container)`
-	height: 100%;
-`;
-const styles = StyleSheet.create({
-	avatar: {
-		backgroundColor: theme.colors.primary,
-		color: theme.colors.text_light,
-	},
-	bubble: {
-		backgroundColor: theme.colors.primary,
-		color: theme.colors.text_light,
-	},
-});

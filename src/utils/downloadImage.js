@@ -1,5 +1,4 @@
 import firebase, { firebase_storage } from "../config/firebase";
-import { CacheManager } from "react-native-expo-image-cache";
 
 // taken from docs at url below
 // https://firebase.google.com/docs/storage/web/download-files
@@ -11,12 +10,11 @@ export const downloadImage = async (user, imageType) => {
 			.child(`${user.uid}/images/${imageType}`)
 			.getDownloadURL();
 
-		const path = await CacheManager.get(downloadURL).getPath();
-
-		return path;
+		return downloadURL;
 	} catch (error) {
 		// A full list of error codes is available at
 		// https://firebase.google.com/docs/storage/web/handle-errors
+		// TODO: set errors logs
 		switch (error.code) {
 			case "storage/object-not-found":
 				// File doesn't exist

@@ -9,6 +9,7 @@ import isEmpty from "lodash/fp/isEmpty";
 // import context
 import { useAuth } from "../context/auth";
 import { useUserDetails } from "../context/userDetails";
+import { useUploadImage } from "../utils/useUploadImage";
 
 //***********
 // component
@@ -18,13 +19,20 @@ export default function ImagePicker({ children, ...props }) {
 	const { uploadImage } = useUserDetails();
 	const { user } = useAuth();
 	const [image, setImage] = useState();
+	const [uploadURL, setUploadURL] = useState(null);
+	const { downloadURL } = useUploadImage(user, uploadURL, props.imageType);
 
-	// get phone permissions on page load
+	// effect sets imagePicker's parent image when a valid download url is present
 	useEffect(() => {
-		// console.log("image:", image); // ? debug
+		if (downloadURL) props.setParentImage(downloadURL);
+	}, [downloadURL]);
+
+	// effect gets phone permissions on page load
+	useEffect(() => {
 		getPhonePermissions();
 	}, []);
 
+	// function gets phont permissions.  Invoked in above effect
 	const getPhonePermissions = async () => {
 		if (Constants.platform.ios) {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -34,6 +42,7 @@ export default function ImagePicker({ children, ...props }) {
 		}
 	};
 
+	// function opens image library / camera on phone.  Invoked by onPress event
 	const pickImage = async () => {
 		try {
 			let result = await ExpoImagePicker.launchImageLibraryAsync({
@@ -44,17 +53,10 @@ export default function ImagePicker({ children, ...props }) {
 			});
 
 			if (!result.cancelled) {
-				// upload image to firebase storage
-				const downloadURL = await uploadImage(
-					user,
-					result.uri,
-					props.imageType,
-				);
-
-				// if parentImage exists, set parentImage
+				// if parentImage exists, set uploadURL state (at top)
 				// if not, set this ImagePicker image
 				props.setParentImage
-					? props.setParentImage(result.uri)
+					? setUploadURL(result.uri)
 					: setImage(result.uri);
 			}
 
@@ -64,7 +66,7 @@ export default function ImagePicker({ children, ...props }) {
 		}
 	};
 
-	// choose image source based on provided props
+	// function chooses image source based on provided props
 	const imageSource = () => {
 		if (!isEmpty(props.parentImage)) {
 			return { uri: props.parentImage };
