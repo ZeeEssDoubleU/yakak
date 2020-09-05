@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { List, Title, IconButton, useTheme } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { List, Title, IconButton, useTheme, Text } from "react-native-paper";
 import { format } from "date-fns/fp";
 import styled from "styled-components/native";
 
@@ -21,7 +21,7 @@ export default function Item({ item, navigation }) {
 			<RightContainer>
 				<Time>{formatTime}</Time>
 				<StyledIcon
-					icon={theme.icons.right}
+					icon={theme.icons.forward}
 					color={theme.colors.text_medium}
 				/>
 			</RightContainer>

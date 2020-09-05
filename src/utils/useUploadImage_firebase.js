@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import firebase, { firebase_storage } from "../config/firebase";
 
-export const useUploadImage = (user, uploadURL, imageType) => {
+export const useUploadImage_firebase = (user, uploadURL, imageType) => {
 	const [downloadURL, setDownloadURL] = useState(null);
 	const [progress, setProgress] = useState(0);
 

@@ -45,7 +45,7 @@ export default function MainStack() {
 							icon={theme.icons.add}
 							size={theme.sizes.icon_md}
 							color={theme.colors.text_light}
-							onPress={() => navigation.navigate("AddRoom")}
+							onPress={() => navigation.navigate("Add Room")}
 						/>
 					),
 					headerLeft: () => (

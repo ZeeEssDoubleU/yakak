@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
 import styled from "styled-components/native";

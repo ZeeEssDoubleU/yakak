@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Avatar as MuiAvatar, useTheme, TextInput } from "react-native-paper";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useTheme, TextInput, Text } from "react-native-paper";
 import styled from "styled-components/native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { useHeaderHeight } from "@react-navigation/stack";
@@ -15,10 +15,6 @@ import { useUserDetails } from "../context/userDetails";
 //***********
 // component
 //***********
-
-// add banner placeholder
-// integrate expo-image-pickr
-// integrate into avatar
 
 export default function ProfileScreen() {
 	const HEADER_HEIGHT = useHeaderHeight();
@@ -52,6 +48,7 @@ export default function ProfileScreen() {
 						borderRadius={0}
 						parentImage={userDetails.banner}
 						setParentImage={userDetails.setBanner}
+						setParentImage_download={userDetails.setBanner_download}
 						imageType="banner"
 					/>
 					<DetailsWrapper>
@@ -63,6 +60,9 @@ export default function ProfileScreen() {
 									borderRadius={theme.sizes.avatar_border_radius}
 									parentImage={userDetails.avatar}
 									setParentImage={userDetails.setAvatar}
+									setParentImage_download={
+										userDetails.setAvatar_download
+									}
 									imageType="avatar"
 								/>
 							</AvatarWrapper>
@@ -71,7 +71,12 @@ export default function ProfileScreen() {
 								value={userDetails.displayName}
 								onChangeText={userDetails.setDisplayName}
 							/>
-							<Details label="Email" value={user.email} disabled />
+							<Details
+								label="Email"
+								value={userDetails.email}
+								onChangeText={userDetails.setEmail}
+								autoCapitalize="none"
+							/>
 							<Details
 								label="About (optional)"
 								value={userDetails.about}
@@ -120,7 +125,7 @@ const DetailsWrapper = styled(View)`
 const Details = styled(TextInput)`
 	border-radius: 4px;
 	margin: ${theme.sizes.window_padding}px ${theme.sizes.window_padding}px;
-	font-size: 14px;
+	font-size: 30px;
 	background-color: ${theme.colors.surface_bg};
 `;
 const Logout = styled(FormButton)`

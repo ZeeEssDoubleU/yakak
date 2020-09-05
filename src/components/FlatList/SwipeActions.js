@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import { IconButton, useTheme, Button } from "react-native-paper";
 import styled from "styled-components/native";
@@ -39,13 +39,17 @@ export default function SwipeActions({
 	const textOpacity = sub(1, iconOpacity);
 
 	// check if current user is owner of chat room
-	const isOwner = () => item.owner._id === user.uid;
+	const [isOwner, setIsOwner] = useState(false);
+	// when user changes set isOwner state
+	useEffect(() => {
+		item && setIsOwner(item.owner._id === user.uid);
+	}, [user]);
 
 	// shows action sheet upon clicking remove button
 	const { showActionSheetWithOptions } = useActionSheet();
 	const removeActions = () => {
 		// returns different action sheets based if owner
-		isOwner() === true
+		isOwner === true
 			? showActionSheetWithOptions(
 					// actions sheet options
 					{
@@ -116,7 +120,7 @@ const RemoveContainer = styled(Container)`
 	height: 100%;
 	background-color: ${(props) => props.theme.colors.danger};
 	background-color: ${(props) =>
-		props.isOwner() === true
+		props.isOwner === true
 			? props.theme.colors.danger
 			: props.theme.colors.disabled};
 `;

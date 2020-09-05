@@ -1,8 +1,16 @@
 import React from "react";
 import { Dimensions } from "react-native";
-import { DefaultTheme } from "react-native-paper";
+import { DefaultTheme, configureFonts } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import { AppLoading } from "expo";
+import {
+	useFonts,
+	Montserrat_200ExtraLight,
+	Montserrat_300Light,
+	Montserrat_400Regular,
+	Montserrat_500Medium,
+} from "@expo-google-fonts/montserrat";
 // import { Ionicons } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 // import providers
@@ -11,6 +19,36 @@ import { ThemeProvider as ScProvider } from "styled-components/native";
 // get dimensions
 const { height: HEIGHT, width: WIDTH } = Dimensions.get("window");
 const STATUSBAR_HEIGHT = getStatusBarHeight();
+
+//***********
+// theme
+//***********
+
+// TODO: REPLACE NAV HEADER COMPONENTS WITH NEW TEXT
+const fontConfig = {
+	default: {
+		regular: {
+			fontFamily: "Montserrat_400Regular",
+			fontWeight: "normal",
+		},
+		medium: {
+			fontFamily: "Montserrat_500Medium",
+			fontWeight: "normal",
+		},
+		light: {
+			fontFamily: "Montserrat_300Light",
+			fontWeight: "normal",
+		},
+		thin: {
+			fontFamily: "Montserrat_200ExtraLight",
+			fontWeight: "normal",
+		},
+	},
+};
+
+// load font config into each platform
+fontConfig.ios = fontConfig.default;
+fontConfig.android = fontConfig.default;
 
 //***********
 // theme
@@ -36,9 +74,8 @@ export const theme = {
 		status_bar_dark: StatusBar.dark,
 		status_bar_light: StatusBar.light,
 	},
-	fonts: {
-		...DefaultTheme.fonts,
-	},
+	fonts: configureFonts(fontConfig),
+	// fonts: { ...DefaultTheme.fonts },
 	icons: {
 		profile: "user",
 		add: "plus",
@@ -52,6 +89,8 @@ export const theme = {
 		eye_open: "eye",
 		eye_shut: "eye",
 		add_photo: "camera",
+		edit_input: "pencil",
+		loading: "spinner",
 	},
 	sizes: {
 		window_height: HEIGHT,
@@ -61,6 +100,7 @@ export const theme = {
 		icon_sm: 28,
 		icon_md: 32,
 		icon_lg: 40,
+		icon_xl: 48,
 		nav_header: 20,
 		nav_font: 20,
 		avatar: WIDTH / 2.75,
@@ -76,8 +116,16 @@ export const theme = {
 //***********
 // provider
 //***********
-
 export const ThemeProvider = ({ children }) => {
+	let [fontsLoaded] = useFonts({
+		Montserrat_200ExtraLight,
+		Montserrat_300Light,
+		Montserrat_400Regular,
+		Montserrat_500Medium,
+	});
+
+	if (!fontsLoaded) return <AppLoading />;
+
 	return (
 		<MuiProvider
 			{...{ theme }}

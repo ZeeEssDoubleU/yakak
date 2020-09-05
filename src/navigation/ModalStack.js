@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useTheme, IconButton, Button } from "react-native-paper";
+import { useTheme, IconButton, Button, Text } from "react-native-paper";
 import styled from "styled-components";
 // import context
 import { useAuth } from "../context/auth";
@@ -41,7 +41,7 @@ export default function ModalStack() {
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen
-				name="AddRoom"
+				name="Add Room"
 				component={AddRoomScreen}
 				options={({ navigation }) => ({
 					// headerShown: false,

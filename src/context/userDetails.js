@@ -1,11 +1,6 @@
-import React, {
-	createContext,
-	useState,
-	useEffect,
-	useLayoutEffect,
-	useContext,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import firebase, {
+	firebase_auth,
 	firebase_firestore,
 	firebase_storage,
 } from "../config/firebase";
@@ -28,6 +23,7 @@ export const UserDetailsProvider = ({ children }) => {
 	const { user } = useAuth();
 	const [displayName, setDisplayName] = useState("");
 	const [about, setAbout] = useState("");
+	const [email, setEmail] = useState("");
 	const [avatar, setAvatar] = useState(null);
 	const [avatar_download, setAvatar_download] = useState(null);
 	const [banner, setBanner] = useState(null);
@@ -44,6 +40,9 @@ export const UserDetailsProvider = ({ children }) => {
 		const downloadURL_banner = await downloadImage(user, "banner");
 		const cacheURL_avatar = await cacheImage(downloadURL_avatar);
 		const cacheURL_banner = await cacheImage(downloadURL_banner);
+
+		// console.log("cacheURL_avatar", cacheURL_avatar); // ? debug
+		// console.log("cacheURL_banner", cacheURL_banner); // ? debug
 
 		if (cacheURL_avatar || downloadURL_avatar) {
 			setAvatar(cacheURL_avatar || downloadURL_avatar);
@@ -62,6 +61,7 @@ export const UserDetailsProvider = ({ children }) => {
 		if (details) {
 			setDisplayName(details.displayName);
 			setAbout(details.about);
+			setEmail(user.email);
 		}
 	};
 
@@ -86,6 +86,9 @@ export const UserDetailsProvider = ({ children }) => {
 	// TODO: that way chat message avatars will update when user updates avatar
 	// saves user details
 	const saveUserDetails = async () => {
+		console.log("avatar_download saved:", avatar_download); // ? debug
+		console.log("banner_download saved:", banner_download); // ? debug
+
 		// user details object
 		const userDetails = {
 			_id: user.uid,
@@ -97,7 +100,31 @@ export const UserDetailsProvider = ({ children }) => {
 		};
 
 		// create or update user document
-		await userDocRef().set(userDetails);
+		try {
+			await userDocRef().set(userDetails);
+			console.log("User details doc successfully updated :D");
+		} catch (err) {
+			console.log("User details doc failed to update :(", err);
+		}
+
+		// update user auth email
+		try {
+			await firebase_auth.currentUser.updateEmail(email);
+			console.log("User email successfully updated :D");
+		} catch (err) {
+			console.log("User email failed to update :(", err);
+		}
+
+		// update user auth profile
+		try {
+			await firebase_auth.currentUser.updateProfile({
+				displayName: displayName,
+				photoURL: avatar_download,
+			});
+			console.log("User profile successfully updated :D");
+		} catch (err) {
+			console.log("User profile failed to update :(", err);
+		}
 	};
 
 	return (
@@ -107,10 +134,14 @@ export const UserDetailsProvider = ({ children }) => {
 				setDisplayName,
 				about,
 				setAbout,
+				email,
+				setEmail,
 				avatar,
 				setAvatar,
+				setAvatar_download,
 				banner,
 				setBanner,
+				setBanner_download,
 				saveUserDetails,
 			}}
 		>

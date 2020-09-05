@@ -24,4 +24,5 @@ const Container = styled(View)`
 `;
 const StyledTitle = styled(Title)`
 	font-size: 24px;
+	font-family: "Montserrat_500Medium";
 `;

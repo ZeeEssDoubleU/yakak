@@ -1,12 +1,12 @@
 import React from "react";
 import {
 	View,
-	Text,
 	StyleSheet,
 	Dimensions,
 	TouchableWithoutFeedback,
 	Alert,
 } from "react-native";
+import { Text } from "react-native-paper";
 import { State, PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
 	cond,

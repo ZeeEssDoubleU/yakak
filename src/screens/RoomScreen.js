@@ -1,10 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { GiftedChat } from "react-native-gifted-chat";
-import { useTheme } from "react-native-paper";
-import { firebase_firestore } from "../config/firebase";
+import { StyleSheet, Image } from "react-native";
+import { GiftedChat, Avatar } from "react-native-gifted-chat";
+import { useTheme, Avatar as MuiAvatar } from "react-native-paper";
+import {
+	firebase_firestore,
+	firebase_auth,
+	firebase_storage,
+} from "../config/firebase";
 // import components
 import {
+	avatarComponent,
 	bubbleComponent,
 	loadingComponent,
 	sendComponent,
@@ -26,15 +31,9 @@ export default function RoomScreen({ route }) {
 	const { avatar } = useUserDetails();
 	const [messages, setMessages] = useState();
 
-	const docRef = async () => {
-		const userRef = await firebase_firestore
-			.collection("USER_DETAILS")
-			.doc(user.uid);
-		const doc = await userRef.get();
-		const data = doc.data();
-		console.log("DOC REFERENCE:", data);
-		return data;
-	};
+	useEffect(() => {
+		console.log("user", user.photoURL);
+	}, []);
 
 	// effect runs when room mounts
 	useEffect(() => {
@@ -85,13 +84,27 @@ export default function RoomScreen({ route }) {
 		);
 	}
 
+	const thing = async () => {
+		const avatarRef = await firebase_storage
+			.ref()
+			.child(`${user.uid}/images/avatar`);
+
+		console.log("TILDJFDFKJDSFLKJ", avatarRef);
+		return avatarRef;
+	};
+
 	return (
 		<GiftedChat
 			alwaysShowSend
 			showUserAvatar // ? debug
 			messages={messages}
 			onSend={(newMessage) => handleSend(newMessage)}
-			// onPressAvatar // TODO: link to users profile page
+			// TODO: displays incorrect image on old messages after user has changed avatar
+			// ! firebase cannot reference fields
+			// * consider converting just chat section to postgres
+			// * keep authenticaion and free stroage on firebase
+			// ? consider implementing cloud functions to find and change broken avatar links
+			// renderAvatar={}
 			renderBubble={bubbleComponent}
 			renderLoading={loadingComponent}
 			renderSend={sendComponent}
@@ -100,8 +113,8 @@ export default function RoomScreen({ route }) {
 			scrollToBottomComponent={scrollComponent}
 			user={{
 				_id: user.uid,
-				name: user.email,
-				user: firebase_firestore.collection("USER_DETAILS").doc(user.uid),
+				name: user.displayName || user.email,
+				// avatar: user.photoURL, // ! avatar removed for now, until database setup on postgres
 			}}
 		/>
 	);

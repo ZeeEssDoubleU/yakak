@@ -54,7 +54,7 @@ export default function AddRoomScreen({ navigation }) {
 					});
 				});
 
-			navigation.navigate("Home");
+			navigation.navigate("Rooms");
 		}
 	}
 
